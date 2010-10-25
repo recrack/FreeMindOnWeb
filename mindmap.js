@@ -9,14 +9,16 @@ var NodeEdgeColor = "black";
 var NodeTextColor = "black";
 var NodeUnderLineMargin = 3;
 var EdgeBezier = 20;
+var FocusNode = 0;
+var FocusBGColor = "gray";
 
-var RootNode = {"text":"hello html5", "child":[{"text":"html5 is gooooooood", "child":null, "direct":"left"}
-                                           , {"text":"this is true", "child":[{"text":"beonit", "child":null}
-                                                                              , {"text":"enoch", "child":[{"text":"beonit", "child":null}
-                                                                                                          , {"text":"loves2", "child":null}]
+var RootNode = {"text":"hello html5", "id":0, "child":[{"text":"html5 is gooooooood", "id":1, "child":null, "direct":"left"}
+                                           , {"text":"this is true", "id":2, "child":[{"text":"beonit", "id":3, "child":null}
+                                                                              , {"text":"enoch", "id":4, "child":[{"text":"beonit", "id":5, "child":null}
+                                                                                                          , {"text":"loves2", "id":6, "child":null}]
                                                                                 }
-                                                                              , {"text":"loves", "child":null}], "direct":"right"
-                                             }, {"text":"test", "child":null, "direct":"left"}]
+                                                                              , {"text":"loves", "id":7, "child":null}], "direct":"right"
+                                             }, {"text":"test", "id":8, "child":null, "direct":"left"}]
            };
 
 function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
@@ -50,7 +52,6 @@ function measureNode(node){
     // no child
     if( node.child == null ){
         node.height = NodeFontHeight + NodePaddingH * 2 + NodeMarginH * 2;
-        // console.log("text:" + node.text + " nodeHeight:", node.height);
         return node.height;
     }
     // has child
@@ -95,9 +96,14 @@ function measureNodeLeft(node){
 function nodeDrawRight(ctx, x, y, node){
     // calc rect
     var calcRt = ctx.measureText(node.text);
+    // focus rect
+    node["area"] = [x, y, x+calcRt.width, y+NodeFontHeight];
+    if( FocusNode == node.id ){
+        ctx.fillStyle = FocusBGColor;
+        ctx.fillRect(x, y, calcRt.width, NodeFontHeight);
+    }
     // draw underline
     ctx.beginPath();
-    console.log(node.text);
     ctx.strokeStyle = NodeEdgeColor;
     ctx.moveTo(x, y + NodeFontHeight + NodeUnderLineMargin);
     ctx.lineTo(x + calcRt.width, y + NodeFontHeight + NodeUnderLineMargin);
@@ -125,6 +131,12 @@ function nodeDrawRight(ctx, x, y, node){
 function nodeDrawLeft(ctx, x, y, node){
     // calc rect
     var calcRt = ctx.measureText(node.text);
+    // focus rect
+    node["area"] = [x - calcRt.width, y, x, y+NodeFontHeight];
+    if( FocusNode == node.id ){
+        ctx.fillStyle = FocusBGColor;
+        ctx.fillRect(x - calcRt.width, y, calcRt.width, NodeFontHeight);
+    }
     // draw underline
     ctx.beginPath();
     ctx.strokeStyle = NodeEdgeColor;
@@ -154,8 +166,15 @@ function nodeDrawLeft(ctx, x, y, node){
 function nodeDrawRoot(ctx, x, y, node){
     // calc rect
     var calcRt = ctx.measureText(node.text);
-    // draw rect
-    ctx.fillStyle = NodeBGColor;
+    // focus rect
+    node["area"] = [x - NodePaddingW, y-NodePaddingH, x - NodePaddingW + calcRt.width + NodePaddingW*2, y - NodePaddingH + NodeFontHeight + NodePaddingH*2];
+    if( FocusNode == node.id ){
+        ctx.fillStyle = FocusBGColor;
+        ctx.fillRect(node.area[0], node.area[1], calcRt.width, NodeFontHeight);
+    }else{
+        // draw rect
+        ctx.fillStyle = NodeBGColor;
+    }
     roundRect(ctx, x - NodePaddingW, y-NodePaddingH, calcRt.width + NodePaddingW*2, NodeFontHeight + NodePaddingH*2, NodeRadius, true, true);
     // draw text
     ctx.fillStyle = NodeTextColor;
@@ -206,12 +225,14 @@ function edgeDrawLeft(ctx, startX, startY, endX, endY){
     ctx.stroke();
 }
 
-function main(){
+// draw event
+function draw(){
     var canvas = document.getElementById('canvas');
     if (!canvas.getContext){  
         return;
     }
     var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = "" + NodeFontHeight + "px sans-serif";
     ctx.textDecoration = "underline";
     ctx.textBaseline = "top";
@@ -219,4 +240,64 @@ function main(){
     measureNodeRight(RootNode);
     measureNodeLeft(RootNode);
     nodeDrawRoot(ctx, 300, 100, RootNode);
+    ctx.fillRect(0, 0, 10, 10);
+}
+
+function findFocus(node, x, y){
+    if( node.area[0] <= x && node.area[1] <= y && node.area[2] >= x && node.area[3] >= y ){
+        FocusNode = node.id;
+    }
+    for( var i in node.child ){
+        findFocus(node.child[i], x, y);
+    }
+}
+
+// mouse move event
+function onMouseMoveCanvas(canvas){
+    var evt = window.event || e;
+    draw();
+    findFocus(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
+}
+
+// calc frame rate
+var width;
+var height;
+var delta;
+var lastTime;
+var frames;
+var totalTime;
+var updateTime;
+var updateFrames;
+
+function init( isFrameRateMode ) {
+    var canvas =document.getElementById('canvas');
+    width = canvas.width;
+    height = canvas.height; 
+    lastTime = (new Date()).getTime();
+    frames = 0;
+    totalTime = 0;
+    updateTime = 0;
+    updateFrames =0;
+    if( isFrameRateMode )
+        setInterval(update, 100);
+    else
+        draw();
+}
+
+
+function update() {
+    var now = (new Date()).getTime();
+    delta = now-lastTime;
+    lastTime = now;
+    totalTime+=delta;
+    frames++;
+    updateTime+=delta;
+    updateFrames++;
+    if(updateTime > 1000) {
+        document.getElementById('fps').innerHTML = "FPS AVG: " + (1000*frames/totalTime) + " CUR: " + (1000*updateFrames/updateTime);
+        updateTime = 0;
+        updateFrames =0;
+    }
+
+    draw();
 }

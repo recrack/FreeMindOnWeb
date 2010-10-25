@@ -3,7 +3,9 @@
     <title>canvas test</title>
     <script src="mindmap.js" language="javascript" type=""></script>
   </head>
-  <body onload="main()" style="background-color:white;">
-    <canvas id="canvas" width="1000px" height="400px" style="background-color:white;"/>
+  <body onload="init(0)" style="background-color:white;">
+    <div id="fps" style="width:100%; height:30px;">
+    </div>
+    <canvas id="canvas" width="1000px" height="400px" style="background-color:white;" onMouseMove="onMouseMoveCanvas(this)"/>
   </body>
 </html>

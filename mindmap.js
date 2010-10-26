@@ -11,6 +11,7 @@ var NodeUnderLineMargin = 3;
 var EdgeBezier = 20;
 var FocusNode = 0;
 var FocusBGColor = "gray";
+var ModeEdit = false;
 
 var RootNode = {"text":"hello html5", "id":0, "child":[{"text":"html5 is gooooooood", "id":1, "child":null, "direct":"left"}
                                            , {"text":"this is true", "id":2, "child":[{"text":"beonit", "id":3, "child":null}
@@ -245,18 +246,41 @@ function draw(){
 
 function findFocus(node, x, y){
     if( node.area[0] <= x && node.area[1] <= y && node.area[2] >= x && node.area[3] >= y ){
-        FocusNode = node.id;
+        return node;
     }
+    var retObj;
     for( var i in node.child ){
-        findFocus(node.child[i], x, y);
+        retObj = findFocus(node.child[i], x, y);
+        if( retObj != null )
+            return retObj;
     }
+    return null;
 }
 
 // mouse move event
 function onMouseMoveCanvas(canvas){
+    if( ModeEdit )
+        return;
     var evt = window.event || e;
     draw();
-    findFocus(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
+    var node = findFocus(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
+    if( node != null )
+        FocusNode = node.id;
+}
+
+function onMouseUpCanvas(){
+    if( ModeEdit ){
+        NodeEditDone();
+    }
+    if( !ModeEdit ){
+        var evt = window.event || e;
+        var node = findFocus(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
+        if( node == null )
+            return;
+        FocusNode = node.id;
+        draw();
+        NodeEdit();
+    }
 }
 
 // calc frame rate
@@ -300,4 +324,137 @@ function update() {
     }
 
     draw();
+}
+
+
+function findFocusNode(node){
+    if( node.id == FocusNode )
+        return node;
+    var retObj;
+    for( var i in node.child ){
+        retObj = findFocusNode(node.child[i]);
+        if( retObj != null )
+            return retObj;
+    }
+    return null;
+}
+
+function findParentsNode(node){
+    for( var i in node.child ){
+        if( node.child[i].id == FocusNode )
+            return this;
+    }
+    var retObj;
+    for( var i in node.child ){
+        retObj = findParentsNode( node.child[i] );
+        if( retObj != null )
+            return retObjt;
+    }
+    return null;
+}
+
+function NodeAddSibling(){
+}
+
+function NodeInsertChild(){
+}
+
+function NodeDelete(){
+    node = findFocusNode(RootNode);
+}
+
+function FocusToRoot(){
+    FocusNode = RootNode.id;
+    draw();
+}
+
+function FocusToLeft(){
+    node = findFocusNode(RootNode);
+}
+
+function FocusToUp(){
+    node = findFocusNode(RootNode);
+}
+
+function FocusToRight(){
+    node = findFocusNode(RootNode);
+}
+
+function FocusToDown(){
+    node = findFocusNode(RootNode);
+}
+
+function NodeEdit(){
+    ModeEdit = true;
+    var input = document.getElementById('input');
+    var node = findFocusNode(RootNode);
+    input.style.display = "block";
+    input.style.left = node.area[0];
+    input.style.top = node.area[1];
+    input.style.width = node.area[2] - node.area[0];
+    input.style.height = node.area[3] - node.area[1];
+    input.value = node.text;
+    input.focus();
+}
+
+function NodeEditDone(){
+    var input = document.getElementById('input');
+    var node = findFocusNode(RootNode);
+    node.text = input.value;
+    input.style.display = "None";
+    ModeEdit = false;
+    draw();
+}
+
+function cancelInput(){
+}
+
+// keyboard event
+function onKeyUp(){
+    var evtobj = window.event ? event : e;
+    switch( evtobj.keyCode ){
+    case 13:
+        // enter key
+        console.log("enter key");
+        if( ModeEdit )
+            NodeEditDone();
+        else
+            NodeAddSibling();
+        break;
+    case 27:
+        // ESC
+        console.log("ESC Key");
+        break;
+    case 37:
+        // left key
+        console.log("left key");
+        break;
+    case 38:
+        // up key
+        console.log("up key");
+        break;
+    case 39:
+        // right key
+        console.log("right key");
+        break;
+    case 40:
+        // down key
+        console.log("down key");
+        break;
+    case 45:
+        // insert key
+        console.log("insert Key");
+        break;
+    case 46:
+        // delete key
+        console.log("delete Key");
+        break;
+    case 113:
+        console.log("F2 key");
+        NodeEdit();
+        break;
+    default:
+        console.log("default");
+        break;
+    }
 }

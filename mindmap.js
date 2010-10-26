@@ -11,7 +11,10 @@ var NodeUnderLineMargin = 3;
 var EdgeBezier = 20;
 var FocusNode = 0;
 var FocusBGColor = "gray";
-var ModeEdit = false;
+const ModeNone = 0, ModeEdit = 1, ModeDrag = 2;
+var Mode;
+var ptDragStart = {"x":0, "y":0};
+var drawPosX, drawPosY;
 
 var RootNode = {"text":"hello html5", "id":0, "child":[{"text":"html5 is gooooooood", "id":1, "child":null, "direct":"left"}
                                            , {"text":"this is true", "id":2, "child":[{"text":"beonit", "id":3, "child":null}
@@ -240,7 +243,7 @@ function draw(){
     ctx.fillStyle = "yellow";
     measureNodeRight(RootNode);
     measureNodeLeft(RootNode);
-    nodeDrawRoot(ctx, 300, 100, RootNode);
+    nodeDrawRoot(ctx, DrawPosX, DrawPosY, RootNode);
     ctx.fillRect(0, 0, 10, 10);
 }
 
@@ -259,33 +262,75 @@ function findFocus(node, x, y){
 
 // mouse move event
 function onMouseMoveCanvas(canvas){
-    if( ModeEdit )
+    if( Mode == ModeEdit )
         return;
-    var evt = window.event || e;
-    draw();
-    var node = findFocus(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
-    if( node != null )
-        FocusNode = node.id;
+    if( Mode == ModeNone ){
+        var evt = window.event || e;
+        draw();
+        var node = findFocus(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
+        if( node != null )
+            FocusNode = node.id;
+    }
+    if( Mode == ModeDrag ){
+        var evt = window.event || e;
+        var dx = ptDragStart.x - evt.clientX - canvas.offsetLeft;
+        var dy = ptDragStart.y - evt.clientY - canvas.offsetTop;
+        DrawPosX -= dx;
+        DrawPosY -= dy;
+        ptDragStart.x = evt.clientX - canvas.offsetLeft;
+        ptDragStart.y = evt.clientY - canvas.offsetTop;
+        draw();
+    }
 }
 
-function onMouseUpCanvas(){
-    if( ModeEdit ){
+function onMouseDownCanvas(){
+    if( Mode == ModeEdit ){
         NodeEditDone();
+        Mode = ModeNone;
+   }
+    Mode = ModeDrag;
+    var evt = window.event || e;
+    ptDragStart.x = evt.clientX - canvas.offsetLeft;
+    ptDragStart.y = evt.clientY - canvas.offsetTop;
+}
+
+
+function onMouseUpCanvas(){
+    showMode();
+    if( Mode == ModeEdit ){
+        NodeEditDone();
+        Mode = ModeNone;
     }
-    if( !ModeEdit ){
+    if( Mode == ModeDrag ){
+        Mode = ModeNone;
+    }
+    if( Mode != ModeEdit ){
         var evt = window.event || e;
         var node = findFocus(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
         if( node == null )
             return;
         FocusNode = node.id;
         draw();
+        Mode = ModeEdit;
         NodeEdit();
+        showMode("editStart");
+    }
+}
+
+function showMode(msg){
+    switch(Mode){
+    case ModeNone:
+        console.log(msg, "mode none"); break;
+    case ModeDrag:
+        console.log(msg, "mode drag"); break;
+    case ModeEdit:
+        console.log(msg, "mode edit"); break;
+    default:
+        console.log(msg, "unknown mode"); break;
     }
 }
 
 // calc frame rate
-var width;
-var height;
 var delta;
 var lastTime;
 var frames;
@@ -295,13 +340,25 @@ var updateFrames;
 
 function init( isFrameRateMode ) {
     var canvas =document.getElementById('canvas');
-    width = canvas.width;
-    height = canvas.height; 
+/*
+// size to fit window
+    var ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx.canvas.width = window.innerWidth;
+    ctx.canvas.height = window.innerHeight;
+*/
     lastTime = (new Date()).getTime();
     frames = 0;
     totalTime = 0;
     updateTime = 0;
     updateFrames =0;
+    Mode = ModeNone;
+    DrawPosX = 0;
+    DrawPosY = 0;
+    draw();
+    DrawPosX = canvas.width/2 - (RootNode.area[2] - RootNode.area[0]);
+    DrawPosY = canvas.height/2;
     if( isFrameRateMode )
         setInterval(update, 100);
     else
@@ -385,7 +442,6 @@ function FocusToDown(){
 }
 
 function NodeEdit(){
-    ModeEdit = true;
     var input = document.getElementById('input');
     var node = findFocusNode(RootNode);
     input.style.display = "block";
@@ -398,11 +454,11 @@ function NodeEdit(){
 }
 
 function NodeEditDone(){
+    console.log("NodeEditDone");
     var input = document.getElementById('input');
     var node = findFocusNode(RootNode);
     node.text = input.value;
     input.style.display = "None";
-    ModeEdit = false;
     draw();
 }
 
@@ -416,8 +472,10 @@ function onKeyUp(){
     case 13:
         // enter key
         console.log("enter key");
-        if( ModeEdit )
+        if( Mode == ModeEdit ){
             NodeEditDone();
+            Mode = ModeNone;
+        }
         else
             NodeAddSibling();
         break;
@@ -454,7 +512,7 @@ function onKeyUp(){
         NodeEdit();
         break;
     default:
-        console.log("default");
+        console.log("key unkown");
         break;
     }
 }

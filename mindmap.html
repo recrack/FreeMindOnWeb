@@ -2,11 +2,16 @@
   <head>
     <title>canvas test</title>
     <link rel="stylesheet" type="text/css" href="mindmap.css">
+    <script src="windowSize.js" language="javascript" type=""></script>
+    <script src="framerate.js" language="javascript" type=""></script>
+    <script src="mindmapDraw.js" language="javascript" type=""></script>
+    <script src="mapdata.js" language="javascript" type=""></script>
     <script src="mindmap.js" language="javascript" type=""></script>
   </head>
   <body onload="init(0)" onKeyUp="onKeyUp()">
     <div id="fps"></div>
     <input id="input" type="text"></input>
-    <canvas id="canvas" width="1000px" height="400px" onMouseMove="onMouseMoveCanvas(this)"  onmouseup="onMouseUpCanvas()" onmousedown="onMouseDownCanvas()"/>
+    <canvas id="canvas" onMouseMove="onMouseMoveCanvas(this)"  onmouseup="onMouseUpCanvas()" onmousedown="onMouseDownCanvas()">
+    </canvas>
   </body>
 </html>

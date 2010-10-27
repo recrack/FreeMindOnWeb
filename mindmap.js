@@ -4,6 +4,10 @@ const ModeEsc = 99; // ECS키 이벤트가 2번 발생하는 이상한 현상 �
 var Mode;
 var ptDragStart = {"x":0, "y":0};
 
+function arrayRemoveByIndex(arrayName, arrayIndex){ 
+    arrayName.splice(arrayIndex,1);
+}
+
 function showMode(msg){
     switch(Mode){
     case ModeNone:
@@ -39,7 +43,7 @@ function onMouseMoveCanvas(canvas){
     if( Mode == ModeNone ){
         var evt = window.event || e;
         draw();
-        var node = findFocus(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
+        var node = findFocusNodeByPos(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
         if( node != null )
             FocusNode = node.id;
     }
@@ -78,7 +82,7 @@ function onMouseUpCanvas(){
     }
     if( Mode != ModeEdit ){
         var evt = window.event || e;
-        var node = findFocus(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
+        var node = findFocusNodeByPos(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
         if( node == null )
             return;
         FocusNode = node.id;
@@ -101,27 +105,28 @@ function findFocusNode(node){
     return null;
 }
 
-function findParentsNode(node){
+// findFocusParents
+function findFocusNodeParents(node){
     for( var i in node.child ){
         if( node.child[i].id == FocusNode )
-            return this;
+            return node;
     }
     var retObj;
     for( var i in node.child ){
-        retObj = findParentsNode( node.child[i] );
+        retObj = findFocusNodeParents( node.child[i] );
         if( retObj != null )
-            return retObjt;
+            return retObj;
     }
     return null;
 }
 
-function findFocus(node, x, y){
+function findFocusNodeByPos(node, x, y){
     if( node.area[0] <= x && node.area[1] <= y && node.area[2] >= x && node.area[3] >= y ){
         return node;
     }
     var retObj;
     for( var i in node.child ){
-        retObj = findFocus(node.child[i], x, y);
+        retObj = findFocusNodeByPos(node.child[i], x, y);
         if( retObj != null )
             return retObj;
     }
@@ -232,11 +237,37 @@ function onKeyUp(){
         break;
     case 45:
         // insert key
-        console.log("insert Key");
+        {
+            console.log("insert Key");
+            // TODO. list
+            // find max id
+            // find focus node
+            // add focus node child
+            // change focus node
+            // draw
+            // go to edit mode
+        }
         break;
+    case 8:
     case 46:
-        // delete key
-        console.log("delete Key");
+        // backspace(8), delete key(46)
+        {
+            console.log("delete Key");
+            if( RootNode.id == FocusNode ){
+                alert("can not delete root node");
+                break;
+            }
+            var pNode = findFocusNodeParents(RootNode);
+            var i = 0;
+            for( i=0; i < pNode.child.length; i++ ){
+                if( pNode.child[i].id == FocusNode ){
+                    arrayRemoveByIndex(pNode.child, i);
+                    break;
+                }
+            }
+            FocusNode = pNode.id;
+            draw();
+        }
         break;
     case 113:
         console.log("F2 key");

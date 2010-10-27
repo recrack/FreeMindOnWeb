@@ -48,7 +48,7 @@ function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
 function measureNode(node){
     node["height"] = 0;
     // no child
-    if( node.child == null ){
+    if( node.child == null || node.child.length == 0 ){
         node.height = NodeFontHeight + NodePaddingH * 2 + NodeMarginH * 2;
         return node.height;
     }
@@ -62,7 +62,7 @@ function measureNode(node){
 function measureNodeRight(node){
     node["heightRight"] = 0;
     // no child
-    if( node.child == null ){
+    if( node.child == null || node.child.length == 0 ){
         node.heightRight = NodeFontHeight + NodePaddingH * 2 + NodeMarginH * 2;
         return node.heightRight;
     }
@@ -78,7 +78,7 @@ function measureNodeRight(node){
 function measureNodeLeft(node){
     node["heightLeft"] = 0;
     // no child
-    if( node.child == null ){
+    if( node.child == null || node.child.length == 0 ){
         node.heightLeft = NodeFontHeight + NodePaddingH * 2 + NodeMarginH * 2;
         return node.heightLeft;
     }

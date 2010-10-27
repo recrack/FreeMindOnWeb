@@ -232,7 +232,6 @@ function onKeyUp(){
     var evtobj = window.event ? event : e;
     switch( evtobj.keyCode ){
     case 13:
-        // TODO.
         // enter key
         console.log("enter key");
         if( Mode == ModeEdit ){
@@ -250,6 +249,7 @@ function onKeyUp(){
             var cNode = findFocusNode(RootNode);
             var pNode = findFocusNodeParents(RootNode);
             var newNode;
+            // check direction
             if( pNode == RootNode ){
                 console.log("is root pNode");
                 newNode = makeNewRootChild( MaxId, RootNode );
@@ -257,14 +257,14 @@ function onKeyUp(){
             }else{
                 newNode = makeNewNode(MaxId);
             }
-
-            var i = 0;
-            for( i=0; i < pNode.child.length; i++ ){
+            // insert specific pos
+            for( var i=0; i < pNode.child.length; i++ ){
                 if( pNode.child[i].id == FocusNode ){
                     pNode.child.splice( i+1, 0, newNode );
                     break;
                 }
             }
+            // focus and edit
             FocusNode = newNode.id;
             draw();
             Mode = ModeEdit;
@@ -287,19 +287,95 @@ function onKeyUp(){
         break;
     case 37:
         // left key
-        console.log("left key");
-        break;
-    case 38:
-        // up key
-        console.log("up key");
+        // for root
+        if( FocusNode == RootNode.id ){
+            for( var i in RootNode.child ){
+                if( RootNode.child[i].direct == "left"){
+                    FocusNode = RootNode.child[i].id;
+                    draw();
+                    return;
+                }
+            }
+        }
+        // for child
+        var node = findFocusNode(RootNode);
+        if( RootNode.area[0] < node.area[0] ){
+            // go parents
+            FocusNode = findFocusNodeParents(RootNode).id;
+        }else{
+            // go child
+            if( node.child.length == 0 )
+                break;
+            FocusNode = node.child[0].id;
+        }
+        draw();
         break;
     case 39:
         // right key
-        console.log("right key");
+        // for root
+        if( FocusNode == RootNode.id ){
+            for( var i in RootNode.child ){
+                if( RootNode.child[i].direct == "right"){
+                    FocusNode = RootNode.child[i].id;
+                    draw();
+                    return;
+                }
+            }
+        }
+        // for child
+        var node = findFocusNode(RootNode);
+        if( RootNode.area[0] > node.area[0] ){
+            // go parents
+            FocusNode = findFocusNodeParents(RootNode).id;
+        }else{
+            // go child
+            if( node.child.length == 0 )
+                break;
+            FocusNode = node.child[0].id;
+        }
+        draw();
         break;
+    case 38:
+        {
+            console.log("up key");
+            // up key
+            if( FocusNode == RootNode.id )
+                break;
+            var node = findFocusNode(RootNode);
+            var posX = ( node.area[0] + node.area[2] ) / 2;
+            var posY = ( node.area[1] + node.area[3] ) / 2;
+            var newFocus = null;
+            for( ; posY >= 0; posY -= NodeFontHeight ){
+                newFocus = findNodeByPos( RootNode, posX, posY );
+                if( newFocus != null && node != newFocus ){
+                    FocusNode = newFocus.id;
+                    draw();
+                    break;
+                }
+            }
+            break;
+        }
     case 40:
-        // down key
-        console.log("down key");
+        {
+            // down key
+            console.log("down key");
+            if( FocusNode == RootNode.id )
+                break;
+            var node = findFocusNode(RootNode);
+            var posX = ( node.area[0] + node.area[2] ) / 2;
+            var posY = ( node.area[1] + node.area[3] ) / 2;
+            var newFocus = null;
+            var maxHeight = window.innerHeight;
+            console.log("cavnas height : ", maxHeight);
+            for( ; posY >= 0 && posY <= maxHeight; posY += NodeFontHeight ){
+                newFocus = findNodeByPos( RootNode, posX, posY );
+                if( newFocus != null && node != newFocus ){
+                    FocusNode = newFocus.id;
+                    draw();
+                    break;
+                }
+            }
+        }
         break;
     case 45:
         // insert key
@@ -353,6 +429,3 @@ function onKeyUp(){
         break;
     }
 }
-
-
-// window resize

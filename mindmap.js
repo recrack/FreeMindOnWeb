@@ -1,19 +1,35 @@
 var FocusNode = 0;
 const ModeNone = 0, ModeEdit = 1, ModeDrag = 2;
+const ModeEsc = 99; // ECS키 이벤트가 2번 발생하는 이상한 현상 때문에 만들어 놓은 녀석. 
 var Mode;
 var ptDragStart = {"x":0, "y":0};
 
-function findFocus(node, x, y){
-    if( node.area[0] <= x && node.area[1] <= y && node.area[2] >= x && node.area[3] >= y ){
-        return node;
+function showMode(msg){
+    switch(Mode){
+    case ModeNone:
+        console.log(msg, "mode none"); break;
+    case ModeDrag:
+        console.log(msg, "mode drag"); break;
+    case ModeEdit:
+        console.log(msg, "mode edit"); break;
+    default:
+        console.log(msg, "unknown mode"); break;
     }
-    var retObj;
-    for( var i in node.child ){
-        retObj = findFocus(node.child[i], x, y);
-        if( retObj != null )
-            return retObj;
-    }
-    return null;
+}
+
+function init( isFrameRateMode ) {
+    resizeCanvas();
+    Mode = ModeNone;
+    DrawPosX = 0;
+    DrawPosY = 0;
+    draw();
+    DrawPosX = canvas.width/2 - (RootNode.area[2] - RootNode.area[0]);
+    DrawPosY = canvas.height/2;
+    initFrameRate(isFrameRateMode);
+    if( isFrameRateMode )
+        setInterval(updateFrameRate, 100);
+    else
+        draw();
 }
 
 // mouse move event
@@ -73,28 +89,6 @@ function onMouseUpCanvas(){
     }
 }
 
-function showMode(msg){
-    switch(Mode){
-    case ModeNone:
-        console.log(msg, "mode none"); break;
-    case ModeDrag:
-        console.log(msg, "mode drag"); break;
-    case ModeEdit:
-        console.log(msg, "mode edit"); break;
-    default:
-        console.log(msg, "unknown mode"); break;
-    }
-}
-
-function init( isFrameRateMode ) {
-    resizeCanvas();
-    initFrameRate(isFrameRateMode);
-    if( isFrameRateMode )
-        setInterval(updateFrameRate, 100);
-    else
-        draw();
-}
-
 function findFocusNode(node){
     if( node.id == FocusNode )
         return node;
@@ -121,6 +115,19 @@ function findParentsNode(node){
     return null;
 }
 
+function findFocus(node, x, y){
+    if( node.area[0] <= x && node.area[1] <= y && node.area[2] >= x && node.area[3] >= y ){
+        return node;
+    }
+    var retObj;
+    for( var i in node.child ){
+        retObj = findFocus(node.child[i], x, y);
+        if( retObj != null )
+            return retObj;
+    }
+    return null;
+}
+
 function NodeAddSibling(){
 }
 
@@ -129,11 +136,6 @@ function NodeInsertChild(){
 
 function NodeDelete(){
     node = findFocusNode(RootNode);
-}
-
-function FocusToRoot(){
-    FocusNode = RootNode.id;
-    draw();
 }
 
 function FocusToLeft(){
@@ -173,6 +175,13 @@ function NodeEditDone(){
     draw();
 }
 
+function NodeEditCancel(){
+    console.log("NodeEditCancel");
+    var input = document.getElementById('input');
+    input.style.display = "None";
+    draw();
+}
+
 function cancelInput(){
 }
 
@@ -187,12 +196,23 @@ function onKeyUp(){
             NodeEditDone();
             Mode = ModeNone;
         }
-        else
+        if( Mode == None ){
             NodeAddSibling();
+        }
         break;
     case 27:
         // ESC
         console.log("ESC Key");
+        if( Mode == ModeEdit ){
+            NodeEditCancel();
+            Mode = ModeEsc;
+        }else if( Mode == ModeEsc ){
+            Mode = ModeNone;
+        }else if( Mode == ModeNone ){
+            DrawPosX = canvas.width/2 - (RootNode.area[2] - RootNode.area[0]);
+            DrawPosY = canvas.height/2;
+            draw();
+        }
         break;
     case 37:
         // left key

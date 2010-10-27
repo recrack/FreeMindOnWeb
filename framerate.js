@@ -30,10 +30,4 @@ function initFrameRate(){
     totalTime = 0;
     updateTime = 0;
     updateFrames =0;
-    Mode = ModeNone;
-    DrawPosX = 0;
-    DrawPosY = 0;
-    draw();
-    DrawPosX = canvas.width/2 - (RootNode.area[2] - RootNode.area[0]);
-    DrawPosY = canvas.height/2;
 }

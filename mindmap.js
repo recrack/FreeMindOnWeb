@@ -247,16 +247,24 @@ function onKeyUp(){
                 break;
             findMaxId(RootNode);
             MaxId++;
-            var node = findFocusNodeParents(RootNode);
-            // check root child or normal child
+            var cNode = findFocusNode(RootNode);
+            var pNode = findFocusNodeParents(RootNode);
             var newNode;
-            if( node == RootNode ){
-                console.log("is root node");
+            if( pNode == RootNode ){
+                console.log("is root pNode");
                 newNode = makeNewRootChild( MaxId, RootNode );
+                newNode.direct = cNode.direct;
             }else{
                 newNode = makeNewNode(MaxId);
             }
-            node.child.push( newNode );
+
+            var i = 0;
+            for( i=0; i < pNode.child.length; i++ ){
+                if( pNode.child[i].id == FocusNode ){
+                    pNode.child.splice( i+1, 0, newNode );
+                    break;
+                }
+            }
             FocusNode = newNode.id;
             draw();
             Mode = ModeEdit;

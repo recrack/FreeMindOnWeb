@@ -251,7 +251,6 @@ function onKeyUp(){
             var newNode;
             // check direction
             if( pNode == RootNode ){
-                console.log("is root pNode");
                 newNode = makeNewRootChild( MaxId, RootNode );
                 newNode.direct = cNode.direct;
             }else{
@@ -337,12 +336,18 @@ function onKeyUp(){
         break;
     case 38:
         {
-            console.log("up key");
             // up key
             if( FocusNode == RootNode.id )
                 break;
             var node = findFocusNode(RootNode);
-            var posX = ( node.area[0] + node.area[2] ) / 2;
+            var posX;
+            if( RootNode.area[0] < node.area[0] ){
+                // right node
+                posX = node.area[0] + 10;
+            }else{
+                // left node
+                posX = node.area[2] - 10;
+            }
             var posY = ( node.area[1] + node.area[3] ) / 2;
             var newFocus = null;
             for( ; posY >= 0; posY -= NodeFontHeight ){
@@ -358,15 +363,21 @@ function onKeyUp(){
     case 40:
         {
             // down key
-            console.log("down key");
             if( FocusNode == RootNode.id )
                 break;
             var node = findFocusNode(RootNode);
-            var posX = ( node.area[0] + node.area[2] ) / 2;
+            var node = findFocusNode(RootNode);
+            var posX;
+            if( RootNode.area[0] < node.area[0] ){
+                // right node
+                posX = node.area[0] + 10;
+            }else{
+                // left node
+                posX = node.area[2] - 10;
+            }
             var posY = ( node.area[1] + node.area[3] ) / 2;
             var newFocus = null;
             var maxHeight = window.innerHeight;
-            console.log("cavnas height : ", maxHeight);
             for( ; posY >= 0 && posY <= maxHeight; posY += NodeFontHeight ){
                 newFocus = findNodeByPos( RootNode, posX, posY );
                 if( newFocus != null && node != newFocus ){
@@ -387,7 +398,6 @@ function onKeyUp(){
             // check root child or normal child
             var newNode;
             if( node == RootNode ){
-                console.log("is root node");
                 newNode = makeNewRootChild( MaxId, RootNode );
             }else{
                 newNode = makeNewNode(MaxId);
@@ -403,7 +413,6 @@ function onKeyUp(){
     case 46:
         // backspace(8), delete key(46)
         {
-            console.log("delete Key");
             if( RootNode.id == FocusNode ){
                 alert("can not delete root node");
                 break;
@@ -421,8 +430,9 @@ function onKeyUp(){
         }
         break;
     case 113:
-        console.log("F2 key");
+        // F2 key
         NodeEdit();
+        Mode = ModeEdit;
         break;
     default:
         console.log("key unkown");

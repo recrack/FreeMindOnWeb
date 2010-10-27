@@ -3,6 +3,7 @@ const ModeNone = 0, ModeEdit = 1, ModeDrag = 2;
 const ModeEsc = 99; // ECS키 이벤트가 2번 발생하는 이상한 현상 때문에 만들어 놓은 녀석. 
 var Mode;
 var ptDragStart = {"x":0, "y":0};
+var MaxId;
 
 function arrayRemoveByIndex(arrayName, arrayIndex){ 
     arrayName.splice(arrayIndex,1);
@@ -26,6 +27,7 @@ function init( isFrameRateMode ) {
     Mode = ModeNone;
     DrawPosX = 0;
     DrawPosY = 0;
+    MaxId = 0;
     draw();
     DrawPosX = canvas.width/2 - (RootNode.area[2] - RootNode.area[0]);
     DrawPosY = canvas.height/2;
@@ -34,6 +36,35 @@ function init( isFrameRateMode ) {
         setInterval(updateFrameRate, 100);
     else
         draw();
+}
+
+function makeNewRootChild(newId, rootNode ){
+    var newObj = makeNewNode(newId);
+    var numOfRight = 0;
+    var numOfLeft = 0;
+    for( var i in rootNode.child ){
+        if( rootNode.child[i].direct == "right" )
+            numOfRight++;
+        else if( rootNode.child[i].direct == "left" )
+            numOfLeft++;
+        else
+            console.log("root child counting error");
+    }
+    if( numOfLeft > numOfRight )
+        newObj['direct'] = "right";
+    else
+        newObj['direct'] = "left";
+    return newObj;
+}
+
+function makeNewNode(newId){
+    var newObj = new Object;
+    newObj['text'] = "new node";
+    newObj['id'] = newId;
+    newObj['child'] = new Array();
+    newObj['height'] = 0;
+    newObj['area'] = [0, 0, 0, 0];
+    return newObj;
 }
 
 // mouse move event
@@ -90,6 +121,15 @@ function onMouseUpCanvas(){
         Mode = ModeEdit;
         NodeEdit();
         showMode("editStart");
+    }
+}
+
+function findMaxId(node){
+    if( node.id > MaxId ){
+        MaxId = node.id;
+    }
+    for( var i in node.child ){
+        findMaxId( node.child[i] );
     }
 }
 
@@ -201,7 +241,7 @@ function onKeyUp(){
             NodeEditDone();
             Mode = ModeNone;
         }
-        if( Mode == None ){
+        if( Mode == ModeNone ){
             NodeAddSibling();
         }
         break;
@@ -240,15 +280,25 @@ function onKeyUp(){
         {
             console.log("insert Key");
             // TODO. list
-            // find max id
-            // find focus node
-            // add focus node child
-            // change focus node
-            // draw
-            // go to edit mode
+            findMaxId(RootNode);
+            MaxId++;
+            var node = findFocusNode(RootNode);
+            // check root child or normal child
+            var newNode;
+            if( node == RootNode ){
+                console.log("is root node");
+                newNode = makeNewRootChild( MaxId, RootNode );
+            }else{
+                newNode = makeNewNode(MaxId);
+            }
+            node.child.push( newNode );
+            FocusNode = newNode.id;
+            draw();
+            Mode = ModeEdit;
+            NodeEdit();
         }
         break;
-    case 8:
+//    case 8:
     case 46:
         // backspace(8), delete key(46)
         {

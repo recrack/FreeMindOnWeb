@@ -1,6 +1,7 @@
 var FocusNode = 0;
 const ModeNone = 0, ModeEdit = 1, ModeDrag = 2;
 const ModeEsc = 99; // ECS키 이벤트가 2번 발생하는 이상한 현상 때문에 만들어 놓은 녀석. 
+const ModeAfterSibling = 99; // enter 키 이벤트가 2번 발생하는 이상한 현상 때문에 만들어 놓은 녀석. 
 var Mode;
 var ptDragStart = {"x":0, "y":0};
 var MaxId;
@@ -74,7 +75,7 @@ function onMouseMoveCanvas(canvas){
     if( Mode == ModeNone ){
         var evt = window.event || e;
         draw();
-        var node = findFocusNodeByPos(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
+        var node = findNodeByPos(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
         if( node != null )
             FocusNode = node.id;
     }
@@ -113,7 +114,7 @@ function onMouseUpCanvas(){
     }
     if( Mode != ModeEdit ){
         var evt = window.event || e;
-        var node = findFocusNodeByPos(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
+        var node = findNodeByPos(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
         if( node == null )
             return;
         FocusNode = node.id;
@@ -160,27 +161,17 @@ function findFocusNodeParents(node){
     return null;
 }
 
-function findFocusNodeByPos(node, x, y){
+function findNodeByPos(node, x, y){
     if( node.area[0] <= x && node.area[1] <= y && node.area[2] >= x && node.area[3] >= y ){
         return node;
     }
     var retObj;
     for( var i in node.child ){
-        retObj = findFocusNodeByPos(node.child[i], x, y);
+        retObj = findNodeByPos(node.child[i], x, y);
         if( retObj != null )
             return retObj;
     }
     return null;
-}
-
-function NodeAddSibling(){
-}
-
-function NodeInsertChild(){
-}
-
-function NodeDelete(){
-    node = findFocusNode(RootNode);
 }
 
 function FocusToLeft(){
@@ -230,19 +221,46 @@ function NodeEditCancel(){
 function cancelInput(){
 }
 
+function onKeyPress(){
+    // ctrl x, c, v : copy, paste, cut
+    // ctrl s : save
+    // ctrl z : 이거 어려울 듯.
+}
+
 // keyboard event
 function onKeyUp(){
     var evtobj = window.event ? event : e;
     switch( evtobj.keyCode ){
     case 13:
+        // TODO.
         // enter key
         console.log("enter key");
         if( Mode == ModeEdit ){
             NodeEditDone();
+            Mode = ModeAfterSibling;
+        }
+        else if( Mode == ModeAfterSibling ){
             Mode = ModeNone;
         }
-        if( Mode == ModeNone ){
-            NodeAddSibling();
+        else if( Mode == ModeNone ){
+            if( FocusNode == RootNode.id )
+                break;
+            findMaxId(RootNode);
+            MaxId++;
+            var node = findFocusNodeParents(RootNode);
+            // check root child or normal child
+            var newNode;
+            if( node == RootNode ){
+                console.log("is root node");
+                newNode = makeNewRootChild( MaxId, RootNode );
+            }else{
+                newNode = makeNewNode(MaxId);
+            }
+            node.child.push( newNode );
+            FocusNode = newNode.id;
+            draw();
+            Mode = ModeEdit;
+            NodeEdit();
         }
         break;
     case 27:
@@ -279,7 +297,6 @@ function onKeyUp(){
         // insert key
         {
             console.log("insert Key");
-            // TODO. list
             findMaxId(RootNode);
             MaxId++;
             var node = findFocusNode(RootNode);

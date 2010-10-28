@@ -5,6 +5,7 @@ const ModeAfterSibling = 99; // enter 키 이벤트가 2번 발생하는 이상�
 var Mode;
 var ptDragStart = {"x":0, "y":0};
 var MaxId;
+var isCtrl = false;
 
 function arrayRemoveByIndex(arrayName, arrayIndex){ 
     arrayName.splice(arrayIndex,1);
@@ -24,6 +25,7 @@ function showMode(msg){
 }
 
 function init( isFrameRateMode ) {
+    initCtrlKey();
     resizeCanvas();
     Mode = ModeNone;
     DrawPosX = 0;
@@ -37,6 +39,49 @@ function init( isFrameRateMode ) {
         setInterval(updateFrameRate, 100);
     else
         draw();
+}
+
+function initCtrlKey(){
+    document.onkeyup=function(e){
+	if(e.which == 17) isCtrl=false;
+    }
+    document.onkeydown=function(e){
+	if(e.which == 17) isCtrl=true;
+	if(e.which == 83 && isCtrl == true) {
+            // do save, "ctrl + S"
+            return;
+	}
+	else if(e.which == 86 && isCtrl == true) {
+            // do paste, "ctrl + V"
+            var cNode = findFocusNode(RootNode);
+            if( cNode == RootNode ){
+                // paste to root node                
+            }else{
+                // paste to child node
+                cNode.child.push( clipBoard );
+                draw();
+            }
+            // refresh clipboard
+            findMaxId( RootNode );
+            clipBoard = makeCopyNode( clipBoard );
+            return;
+	}
+	else if(e.which == 67 && isCtrl == true) {
+            // do copy, "ctrl + C"
+            findMaxId( RootNode );
+            var node = findFocusNode( RootNode );
+            clipBoard = makeCopyNode( node );
+            return;
+	}
+	else if(e.which == 88 && isCtrl == true) {
+            // do cut, "ctrl + X"
+            findMaxId( RootNode );
+            var node = findFocusNode( RootNode );
+            clipBoard = makeCopyNode( node );
+            focusNodeDelete();
+            return;
+	}
+    }
 }
 
 function makeNewRootChild(newId, rootNode ){
@@ -174,22 +219,6 @@ function findNodeByPos(node, x, y){
     return null;
 }
 
-function FocusToLeft(){
-    node = findFocusNode(RootNode);
-}
-
-function FocusToUp(){
-    node = findFocusNode(RootNode);
-}
-
-function FocusToRight(){
-    node = findFocusNode(RootNode);
-}
-
-function FocusToDown(){
-    node = findFocusNode(RootNode);
-}
-
 function NodeEdit(){
     var input = document.getElementById('input');
     var node = findFocusNode(RootNode);
@@ -216,15 +245,6 @@ function NodeEditCancel(){
     var input = document.getElementById('input');
     input.style.display = "None";
     draw();
-}
-
-function cancelInput(){
-}
-
-function onKeyPress(){
-    // ctrl x, c, v : copy, paste, cut
-    // ctrl s : save
-    // ctrl z : 이거 어려울 듯.
 }
 
 // keyboard event
@@ -412,22 +432,7 @@ function onKeyUp(){
 //    case 8:
     case 46:
         // backspace(8), delete key(46)
-        {
-            if( RootNode.id == FocusNode ){
-                alert("can not delete root node");
-                break;
-            }
-            var pNode = findFocusNodeParents(RootNode);
-            var i = 0;
-            for( i=0; i < pNode.child.length; i++ ){
-                if( pNode.child[i].id == FocusNode ){
-                    arrayRemoveByIndex(pNode.child, i);
-                    break;
-                }
-            }
-            FocusNode = pNode.id;
-            draw();
-        }
+        focusNodeDelete();
         break;
     case 113:
         // F2 key
@@ -438,4 +443,21 @@ function onKeyUp(){
         console.log("key unkown");
         break;
     }
+}
+
+function focusNodeDelete(){
+    if( RootNode.id == FocusNode ){
+        alert("can not delete root node");
+        break;
+    }
+    var pNode = findFocusNodeParents(RootNode);
+    var i = 0;
+    for( i=0; i < pNode.child.length; i++ ){
+        if( pNode.child[i].id == FocusNode ){
+            arrayRemoveByIndex(pNode.child, i);
+            break;
+        }
+    }
+    FocusNode = pNode.id;
+    draw();
 }

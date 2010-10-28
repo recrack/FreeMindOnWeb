@@ -46,6 +46,7 @@ function initCtrlKey(){
 	if(e.which == 17) isCtrl=false;
     }
     document.onkeydown = onKeyDown;
+    document.onkeyup = onKeyUp;
 }
 
 function isMoreRootRight( rootNode ){

@@ -93,7 +93,8 @@ function onKeyDown(e){
     case 40:
         {
             // down key
-            console.log("C-down");
+            if( FocusNode == RootNode.id )
+                return;
             var cNode = findFocusNode(RootNode);
             var pNode = findFocusNodeParents(RootNode);
             var i=0;
@@ -113,7 +114,8 @@ function onKeyDown(e){
     case 38:
         {
             // up key
-            console.log("C-up");
+            if( FocusNode == RootNode.id )
+                return;
             var cNode = findFocusNode(RootNode);
             var pNode = findFocusNodeParents(RootNode);
             var i=0;

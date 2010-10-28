@@ -19,3 +19,11 @@ var RootNode
           ,{"text":"test", "id":8, "fold":false, "child":[], "direct":"left"}
        ]
       };
+
+
+function removeDreg(node){
+    delete node.area;
+    delete node.height;
+    for( var i in node.child )
+        removeDreg(node.child[i]);
+}

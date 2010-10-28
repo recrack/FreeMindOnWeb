@@ -232,11 +232,17 @@ function onKeyDown(e){
     if( isCtrl == false )
         return;
     if( Mode == ModeEdit )
-        return;
+        return true;
     switch( e.which ){
     case 83:
-        // do save, "ctrl + S"
-        break;
+        {
+            // do save, "ctrl + S"
+            removeDreg( RootNode );
+            var jsonStr = JSON.stringify( RootNode );
+            console.log(jsonStr);
+            e.which = 0;
+            return false;
+        }
     case 86:
         {
             // do paste, "ctrl + V"
@@ -258,7 +264,7 @@ function onKeyDown(e){
             // refresh clipboard
             findMaxId( RootNode );
             clipBoard = makeCopyNode( clipBoard );
-            return;
+            return false;
 	}
     case 67:
         {
@@ -266,7 +272,7 @@ function onKeyDown(e){
             findMaxId( RootNode );
             var node = findFocusNode( RootNode );
             clipBoard = makeCopyNode( node );
-            return;
+            return false;
         }
     case 88:
         {
@@ -275,13 +281,13 @@ function onKeyDown(e){
             var node = findFocusNode( RootNode );
             clipBoard = makeCopyNode( node );
             focusNodeDelete();
-            return;
+            return false;
         }
     case 40:
         {
             // down key
             if( FocusNode == RootNode.id )
-                return;
+                return false;
             var cNode = findFocusNode(RootNode);
             var pNode = findFocusNodeParents(RootNode);
             var i=0;
@@ -290,19 +296,18 @@ function onKeyDown(e){
                 if( cNode == pNode.child[i] ) break;
             }
             if( i == len-1 || i == len )
-                return;
+                return false;
             var t = pNode.child[i];
             pNode.child[i] = pNode.child[i+1];
             pNode.child[i+1] = t;
             draw();
-            return;
-            return;
+            return false;
         }
     case 38:
         {
             // up key
             if( FocusNode == RootNode.id )
-                return;
+                return false;
             var cNode = findFocusNode(RootNode);
             var pNode = findFocusNodeParents(RootNode);
             var i=0;
@@ -311,24 +316,24 @@ function onKeyDown(e){
                 if( cNode == pNode.child[i] ) break;
             }
             if( i == 0 || i == len )
-                return;
+                return false;
             var t = pNode.child[i];
             pNode.child[i] = pNode.child[i-1];
             pNode.child[i-1] = t;
             draw();
-            return;
+            return false;
         }
     case 39:
         {
             // right key
             console.log("C-right");
-            return;
+            return false;
         }
     case 37:
         {
             // left key
             console.log("C-left");
-            return;
+            return false;
         }
     }
 }

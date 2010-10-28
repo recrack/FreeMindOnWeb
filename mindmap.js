@@ -129,6 +129,8 @@ function findNodeByPos(node, x, y){
     if( node.area[0] <= x && node.area[1] <= y && node.area[2] >= x && node.area[3] >= y ){
         return node;
     }
+    if( node.fold )
+        return null;
     var retObj;
     for( var i in node.child ){
         retObj = findNodeByPos(node.child[i], x, y);

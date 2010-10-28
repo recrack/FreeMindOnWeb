@@ -8,6 +8,8 @@ var NodeFontHeight = 20;
 var NodeBGColor = "white";
 var NodeTextColor = "black";
 var drawPosX, drawPosY;
+var FoldIconColor = "black";
+var FoldIconSize = 3;
 
 // edge
 var NodeEdgeColor = "black"; // todo. edge color
@@ -48,7 +50,7 @@ function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
 function measureNode(node){
     node["height"] = 0;
     // no child
-    if( node.child == null || node.child.length == 0 ){
+    if( node.child == null || node.child.length == 0 || node.fold ){
         node.height = NodeFontHeight + NodePaddingH * 2 + NodeMarginH * 2;
         return node.height;
     }
@@ -62,7 +64,7 @@ function measureNode(node){
 function measureNodeRight(node){
     node["heightRight"] = 0;
     // no child
-    if( node.child == null || node.child.length == 0 ){
+    if( node.child == null || node.child.length == 0 || node.fold ){
         node.heightRight = NodeFontHeight + NodePaddingH * 2 + NodeMarginH * 2;
         return node.heightRight;
     }
@@ -78,7 +80,7 @@ function measureNodeRight(node){
 function measureNodeLeft(node){
     node["heightLeft"] = 0;
     // no child
-    if( node.child == null || node.child.length == 0 ){
+    if( node.child == null || node.child.length == 0 || node.fold ){
         node.heightLeft = NodeFontHeight + NodePaddingH * 2 + NodeMarginH * 2;
         return node.heightLeft;
     }
@@ -114,6 +116,14 @@ function nodeDrawRight(ctx, x, y, node){
     // draw child
     if( node.child == null )
         return;
+    if( node.fold ){
+        ctx.fillStyle = FoldIconColor;
+        ctx.beginPath();
+        ctx.arc(x + calcRt.width , y + NodeFontHeight + NodeUnderLineMargin , FoldIconSize, 0, Math.PI*2, true);
+        ctx.closePath();
+        ctx.fill();
+        return;
+    }
     var startY = y - node.height/2 + NodeMarginH * 2;
     var childHeight = 0;
     for( var i in node.child ){
@@ -147,8 +157,17 @@ function nodeDrawLeft(ctx, x, y, node){
     ctx.fillStyle = NodeTextColor;
     ctx.fillText(node.text, x - calcRt.width, y);
     // draw child
-    if( node.child == null )
+    if( node.child == null)
        return;
+    // fold icon
+    if( node.fold ){
+        ctx.fillStyle = FoldIconColor;
+        ctx.beginPath();
+        ctx.arc(x - calcRt.width , y + NodeFontHeight + NodeUnderLineMargin , FoldIconSize, 0, Math.PI*2, true);
+        ctx.closePath();
+        ctx.fill();
+        return;
+    }
     var startY = y - node.height/2 + NodeMarginH * 2;
     var childHeight = 0;
     for( var i in node.child ){

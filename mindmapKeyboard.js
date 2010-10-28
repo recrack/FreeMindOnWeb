@@ -6,6 +6,18 @@ function onKeyUp(){
     if( isCtrl == true )
         return;
     switch( evtobj.keyCode ){
+    case 32:
+        {
+            // space key
+            if( Mode == ModeEdit || FocusNode == RootNode.id )
+                return;
+            var node = findFocusNode(RootNode);
+            if( node.child.length == 0 )
+                return;
+            node.fold = node.fold ? false : true;
+            draw();
+            return;
+        }
     case 13:
         // enter key
         console.log("enter key");

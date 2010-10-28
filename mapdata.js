@@ -4,7 +4,7 @@ text, id, child, direct, height, area
 */
 
 var RootNode
-    = {"text":"hello html5", "id":0, "fold":1, "child":
+    = {"text":"hello html5", "id":0, "fold":false, "child":
        [  {"text":"html5 is gooooooood", "id":1, "fold":false, "direct":"left", "child":[]}
           ,{"text":"this is true", "id":2, "fold":false, "direct":"right", "child":
             [  {"text":"beonit", "id":3, "fold":false, "child":[]}

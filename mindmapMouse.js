@@ -13,8 +13,8 @@ function onMouseMoveCanvas(canvas){
     }
     if( Mode == ModeDrag ){
         var evt = window.event || e;
-        var dx = ptDragStart.x - evt.clientX - canvas.offsetLeft;
-        var dy = ptDragStart.y - evt.clientY - canvas.offsetTop;
+        var dx = ptDragStart.x - evt.clientX;
+        var dy = ptDragStart.y - evt.clientY + canvas.offsetTop;
         DrawPosX -= dx;
         DrawPosY -= dy;
         ptDragStart.x = evt.clientX - canvas.offsetLeft;

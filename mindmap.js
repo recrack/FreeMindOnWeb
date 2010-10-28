@@ -142,11 +142,12 @@ function findNodeByPos(node, x, y){
 }
 
 function NodeEdit(){
+    var menu = document.getElementById("menu");
     var input = document.getElementById('input');
     var node = findFocusNode(RootNode);
     input.style.display = "block";
     input.style.left = node.area[0];
-    input.style.top = node.area[1];
+    input.style.top = node.area[1] + menu.clientHeight;
     input.style.width = node.area[2] - node.area[0];
     input.style.height = node.area[3] - node.area[1];
     input.value = node.text;

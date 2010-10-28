@@ -24,7 +24,6 @@ function onMouseMoveCanvas(canvas){
 }
 
 function onMouseDownCanvas(){
-    console.log("mouse down");
     if( Mode == ModeEdit)
         return;
     Mode = ModeDrag;
@@ -34,7 +33,6 @@ function onMouseDownCanvas(){
 }
 
 function onMouseUpCanvas(){
-    console.log("mouseup");
     if( Mode == ModeEdit ){
         NodeEditDone();
         Mode = ModeNone;
@@ -45,7 +43,6 @@ function onMouseUpCanvas(){
  }
 
 function onMouseDbClickCanvas(){
-    console.log("double click");
     if( Mode == ModeEdit ){
         NodeEditDone();
     }
@@ -60,7 +57,6 @@ function onMouseDbClickCanvas(){
 }
 
 function onMouseClickCanvas(){
-    console.log("click");
     // node folding    
     if( Mode == ModeEdit ){
         NodeEditDone();

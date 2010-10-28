@@ -44,6 +44,8 @@ function onKeyDown(e){
     if(e.which == 17) isCtrl=true;
     if( isCtrl == false )
         return;
+    if( Mode == ModeEdit )
+        return;
     switch( e.which ){
     case 83:
         // do save, "ctrl + S"
@@ -92,12 +94,39 @@ function onKeyDown(e){
         {
             // down key
             console.log("C-down");
+            var cNode = findFocusNode(RootNode);
+            var pNode = findFocusNodeParents(RootNode);
+            var i=0;
+            var len = pNode.child.length;
+            for( ; i< len; i++){
+                if( cNode == pNode.child[i] ) break;
+            }
+            if( i == len-1 || i == len )
+                return;
+            var t = pNode.child[i];
+            pNode.child[i] = pNode.child[i+1];
+            pNode.child[i+1] = t;
+            draw();
+            return;
             return;
         }
     case 38:
         {
             // up key
             console.log("C-up");
+            var cNode = findFocusNode(RootNode);
+            var pNode = findFocusNodeParents(RootNode);
+            var i=0;
+            var len = pNode.child.length;
+            for( ; i< len; i++){
+                if( cNode == pNode.child[i] ) break;
+            }
+            if( i == 0 || i == len )
+                return;
+            var t = pNode.child[i];
+            pNode.child[i] = pNode.child[i-1];
+            pNode.child[i-1] = t;
+            draw();
             return;
         }
     case 39:

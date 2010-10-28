@@ -11,6 +11,7 @@ function onKeyUp(){
             // space key
             if( Mode == ModeEdit || FocusNode == RootNode.id )
                 return;
+            // node folding
             var node = findFocusNode(RootNode);
             if( node.child.length == 0 )
                 return;

@@ -24,10 +24,9 @@ function onMouseMoveCanvas(canvas){
 }
 
 function onMouseDownCanvas(){
-    if( Mode == ModeEdit ){
-        NodeEditDone();
-        Mode = ModeNone;
-   }
+    console.log("mouse down");
+    if( Mode == ModeEdit)
+        return;
     Mode = ModeDrag;
     var evt = window.event || e;
     ptDragStart.x = evt.clientX - canvas.offsetLeft;
@@ -35,23 +34,52 @@ function onMouseDownCanvas(){
 }
 
 function onMouseUpCanvas(){
-    showMode();
+    console.log("mouseup");
     if( Mode == ModeEdit ){
         NodeEditDone();
         Mode = ModeNone;
     }
     if( Mode == ModeDrag ){
         Mode = ModeNone;
+   }
+ }
+
+function onMouseDbClickCanvas(){
+    console.log("double click");
+    if( Mode == ModeEdit ){
+        NodeEditDone();
     }
-    if( Mode != ModeEdit ){
+    var evt = window.event || e;
+    var node = findNodeByPos(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
+    if( node == null )
+        return;
+    FocusNode = node.id;
+    draw();
+    Mode = ModeEdit;
+    NodeEdit();
+}
+
+function onMouseClickCanvas(){
+    console.log("click");
+    // node folding    
+    if( Mode == ModeEdit ){
+        NodeEditDone();
+        Mode = ModeNone;
+    }
+    else if( Mode != ModeEdit ){
+        // update focus
         var evt = window.event || e;
+        draw();
         var node = findNodeByPos(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
         if( node == null )
             return;
         FocusNode = node.id;
+        // fold
+        if( FocusNode == RootNode.id )
+            return;
+        if( node.child.length == 0 )
+            return;
+        node.fold = node.fold ? false : true;
         draw();
-        Mode = ModeEdit;
-        NodeEdit();
-        showMode("editStart");
     }
 }

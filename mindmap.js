@@ -56,11 +56,18 @@ function initCtrlKey(){
             var cNode = findFocusNode(RootNode);
             if( cNode == RootNode ){
                 // paste to root node                
-            }else{
-                // paste to child node
-                cNode.child.push( clipBoard );
-                draw();
+                if( isMoreRootRight(RootNode) ){
+                    console.log("left");
+                    clipBoard['direct'] = "left";
+                }
+                else{
+                    console.log("right");
+                    clipBoard['direct'] = "right";
+                }
             }
+            // paste
+            cNode.child.push( clipBoard );
+            draw();
             // refresh clipboard
             findMaxId( RootNode );
             clipBoard = makeCopyNode( clipBoard );
@@ -84,8 +91,7 @@ function initCtrlKey(){
     }
 }
 
-function makeNewRootChild(newId, rootNode ){
-    var newObj = makeNewNode(newId);
+function isMoreRootRight( rootNode ){
     var numOfRight = 0;
     var numOfLeft = 0;
     for( var i in rootNode.child ){
@@ -96,10 +102,22 @@ function makeNewRootChild(newId, rootNode ){
         else
             console.log("root child counting error");
     }
-    if( numOfLeft > numOfRight )
-        newObj['direct'] = "right";
-    else
+    if( numOfRight > numOfLeft ){
+        console.log("right > left");
+        return true;
+    }
+    else{
+        console.log("right < left");
+        return false;
+    }
+}
+
+function makeNewRootChild(newId, rootNode ){
+    var newObj = makeNewNode(newId);
+    if( isMoreRootRight(rootNode) )
         newObj['direct'] = "left";
+    else
+        newObj['direct'] = "right";
     return newObj;
 }
 
@@ -305,6 +323,8 @@ function onKeyUp(){
         }
         break;
     case 37:
+        if( Mode == ModeEdit )
+            return;
         // left key
         // for root
         if( FocusNode == RootNode.id ){
@@ -330,6 +350,8 @@ function onKeyUp(){
         draw();
         break;
     case 39:
+        if( Mode == ModeEdit )
+            return;
         // right key
         // for root
         if( FocusNode == RootNode.id ){
@@ -356,6 +378,8 @@ function onKeyUp(){
         break;
     case 38:
         {
+            if( Mode == ModeEdit )
+                return;
             // up key
             if( FocusNode == RootNode.id )
                 break;
@@ -382,6 +406,8 @@ function onKeyUp(){
         }
     case 40:
         {
+            if( Mode == ModeEdit )
+                return;
             // down key
             if( FocusNode == RootNode.id )
                 break;
@@ -411,6 +437,8 @@ function onKeyUp(){
     case 45:
         // insert key
         {
+            if( Mode == ModeEdit )
+                return;
             console.log("insert Key");
             findMaxId(RootNode);
             MaxId++;
@@ -431,10 +459,14 @@ function onKeyUp(){
         break;
 //    case 8:
     case 46:
+        if( Mode == ModeEdit )
+            return;
         // backspace(8), delete key(46)
         focusNodeDelete();
         break;
     case 113:
+        if( Mode == ModeEdit )
+            return;
         // F2 key
         NodeEdit();
         Mode = ModeEdit;

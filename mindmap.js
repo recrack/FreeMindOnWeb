@@ -40,18 +40,16 @@ function init( isFrameRateMode ) {
     else
         draw();
 }
-
-function initCtrlKey(){
-    document.onkeyup=function(e){
-	if(e.which == 17) isCtrl=false;
-    }
-    document.onkeydown=function(e){
-	if(e.which == 17) isCtrl=true;
-	if(e.which == 83 && isCtrl == true) {
-            // do save, "ctrl + S"
-            return;
-	}
-	else if(e.which == 86 && isCtrl == true) {
+function onKeyDown(e){
+    if(e.which == 17) isCtrl=true;
+    if( isCtrl == false )
+        return;
+    switch( e.which ){
+    case 83:
+        // do save, "ctrl + S"
+        break;
+    case 86:
+        {
             // do paste, "ctrl + V"
             var cNode = findFocusNode(RootNode);
             if( cNode == RootNode ){
@@ -73,22 +71,54 @@ function initCtrlKey(){
             clipBoard = makeCopyNode( clipBoard );
             return;
 	}
-	else if(e.which == 67 && isCtrl == true) {
+    case 67:
+        {
             // do copy, "ctrl + C"
             findMaxId( RootNode );
             var node = findFocusNode( RootNode );
             clipBoard = makeCopyNode( node );
             return;
-	}
-	else if(e.which == 88 && isCtrl == true) {
+        }
+    case 88:
+        {
             // do cut, "ctrl + X"
             findMaxId( RootNode );
             var node = findFocusNode( RootNode );
             clipBoard = makeCopyNode( node );
             focusNodeDelete();
             return;
-	}
+        }
+    case 40:
+        {
+            // down key
+            console.log("C-down");
+            return;
+        }
+    case 38:
+        {
+            // up key
+            console.log("C-up");
+            return;
+        }
+    case 39:
+        {
+            // right key
+            console.log("C-right");
+            return;
+        }
+    case 37:
+        {
+            // left key
+            console.log("C-left");
+            return;
+        }
     }
+}
+function initCtrlKey(){
+    document.onkeyup=function(e){
+	if(e.which == 17) isCtrl=false;
+    }
+    document.onkeydown = onKeyDown;
 }
 
 function isMoreRootRight( rootNode ){
@@ -268,6 +298,8 @@ function NodeEditCancel(){
 // keyboard event
 function onKeyUp(){
     var evtobj = window.event ? event : e;
+    if( isCtrl == true )
+        return;
     switch( evtobj.keyCode ){
     case 13:
         // enter key

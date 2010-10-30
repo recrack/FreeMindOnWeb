@@ -1,0 +1,55 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>myMindWeb.kr</title>
+    <!-- css -->
+    <link rel="stylesheet" href="./mindmap.css" type="text/css" /> 
+    <!-- java script -->
+    <script type="text/javascript" src="./theme.js"></script> 
+  </head>
+  <body>
+
+    <!-- menu -->
+    <div id="menu">
+      <div id="title">
+        MyMindWeb.kr
+      </div>
+      <span class="vr"></span>
+      <div id="mapName">RootName</div>
+      <span class="vr"></span>
+      <ul>
+        <li class="button"><a href="#">new</a></li>
+        <li class="button"><a href="#">save</a></li>
+        <li class="button"><a href="#">load</a></li>
+        <li class="button"><a href="#">export</a></li>
+        <li class="button" onclick="helpToggle()"><a href="#">help</a></li>
+      </ul>
+      <span class="vr"></span>
+      <!-- todo. action will be choosed by php-->
+      <div id="sessionBox">
+        <form id="login" action="#" method="POST">
+          <input type="email" placeholder="email address" required="required" name="id"/>
+          <input type="password" placeholder="password" name="passwd" required/>
+        </form>
+        <div class="button"><a href="#">login</a></div>
+        <span class="vr"></span>
+        <div class="button"><a href="#">join us</a></div>
+      </div>
+    </div>
+
+    <!-- body -->
+    <div id="body">
+    </div>
+
+    <!-- help -->
+    <div id="help">
+      <div id="helpclose" onclick="helpToggle()"><a href="#">X</a></div>
+      insert child : insert key<br/>
+      insert sibling : enter key<br/>
+      modify node : F2<br/>
+      delete node : delete key<br/>
+      move : direction key<br/>
+      copy, paste, cut : ctrl + c,v,x<br/>
+    </div>
+
+  </body>
+</html>

@@ -6,7 +6,7 @@
     <!-- java script -->
     <script type="text/javascript" src="./theme.js"></script> 
   </head>
-  <body>
+  <body onload="mainTheme()">
 
     <!-- menu -->
     <div id="menu">
@@ -14,9 +14,9 @@
         MyMindWeb.kr
       </div>
       <span class="vr"></span>
-      <div id="mapName">RootName</div>
+      <div class="subtitle" id="mapname">RootName</div>
       <span class="vr"></span>
-      <ul>
+      <ul class="buttonBox">
         <li class="button"><a href="#">new</a></li>
         <li class="button"><a href="#">save</a></li>
         <li class="button"><a href="#">load</a></li>
@@ -32,7 +32,7 @@
         </form>
         <div class="button"><a href="#">login</a></div>
         <span class="vr"></span>
-        <div class="button"><a href="#">join us</a></div>
+        <div class="button"><a href="./join.html">join us</a></div>
       </div>
     </div>
 

@@ -17,7 +17,6 @@ body {
 
    /* from twitter interface */
    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#333), to(#111));
-   
    position: relative;
    z-index:2;
 }
@@ -37,17 +36,30 @@ body {
    text-shadow:1px 1px 8px #FFFFFF;
 }
 
+.subtitle{
+   float: left;
+   color: white;
+
+   padding-left: 50px;
+   padding-right: 50px;
+}
+
+.buttonBox {
+   float:left;
+}
+
 #menu .button {
    float: left;
    margin: 0px 10px;
 }
 
 #menu .button a{
-   color: darkgray;
+   color: #CCCCCC;
    text-decoration: none;
 }
 
 #menu .button:hover a {
+   color: lightgray;
    text-shadow:1px 1px 8px #FFFFFF;
 }
 
@@ -125,10 +137,3 @@ body {
    float:right;
 }
 
-#mapName{
-   float: left;
-   color: white;
-
-   padding-left: 50px;
-   padding-right: 50px;
-}

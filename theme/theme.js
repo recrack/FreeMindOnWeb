@@ -1,11 +1,9 @@
-window.onload = main;
-window.onresize = initMap;
-
-function main() {
+function mainTheme() {
     console.log("function");
     window.localStorage['lastConnect'] = new Date().getTime();
     initMap();
     initHelp();
+    window.onresize = initMap;
 }
 
 function initMap() {
@@ -14,14 +12,13 @@ function initMap() {
     var body = document.getElementById("body");
     body.style.height = window.innerHeight - menu.clientHeight - 14;
     
+}
+
+function initHelp(){
     // help position
     var help = document.getElementById("help");
     help.style.left = window.innerWidth - help.clientWidth - 30;
     help.style.top = menu.clientHeight + 20;
-    
-}
-
-function initHelp(){
     if( window.localStorage['helpOpen'] != "true" )
         helpToggle();
 }

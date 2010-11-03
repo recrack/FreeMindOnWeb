@@ -41,6 +41,7 @@ function emailCheck(){
     else{
         el.style.backgroundColor = "white";
         elError.style.display = "none";
+        reqCheckId( address );
         return true;
     }
 }
@@ -80,3 +81,21 @@ function formConfirm(){
     return true;
 
 }
+
+function reqCheckId( address ){
+    var url = "../php/idCheck.php";
+    var params = "email=" + address;
+    xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open("POST", url, true);
+    
+    xmlhttp.onreadystatechange = function() {
+	if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+	    var rst = eval(xmlhttp.responseText);
+	}
+    }
+    console.log("request send");
+    xmlhttp.send(params);
+}
+
+// function rspCheckId( )

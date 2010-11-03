@@ -1,4 +1,4 @@
-<?
+<?php
 require('db.inc');
 require('connectivity.php');
 require('conMyMindWeb.php');
@@ -9,9 +9,8 @@ $passwd = $_POST['passwd'];
 print $email;
 
 $con = new MyMindWeb(USER, PASSWD, DB);
-if( $con->boolInsertId($email, $passwd) )
+if( $con->boolLogin($email, $passwd) )
     echo 'true';
 else
     echo 'false';
-
 ?>

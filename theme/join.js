@@ -1,3 +1,4 @@
+
 function mainJoin(){
     initMap();
     var elEmail = document.getElementById("email");
@@ -15,7 +16,7 @@ function emailConfirm(){
 		return false;
     var elEmail = document.getElementById("email");
     var elEmailConfirm = document.getElementById("emailConfirm");
-    var elError = document.getElementById("errorMsg");
+    var elError = document.getElementById("joinusError");
     if( elEmailConfirm.value != elEmail.value ){
         elEmailConfirm.style.backgroundColor = "red";
         elError.style.display = "block";
@@ -32,7 +33,7 @@ function emailConfirm(){
 function emailCheck(){
     var elEmail = document.getElementById("email");
     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-    var elError = document.getElementById("errorMsg");
+    var elError = document.getElementById("joinusError");
     if(reg.test(elEmail.value) == false){
         elEmail.style.backgroundColor = "red";
         elError.style.display = "block";
@@ -44,8 +45,8 @@ function emailCheck(){
         elError.style.display = "none";
 		// xml request call
 		var mmapi = new MindmapAPI();
-		mmapi.checkEmailRsp = function(state){
-			if( state ){
+		mmapi.checkEmailRsp = function(boolResult){
+			if( boolResult ){
 				elEmail.style.backgroundColor = "green";
 			}
 			else{
@@ -62,7 +63,7 @@ function emailCheck(){
 function passwdConfirm(){
     var elPasswd = document.getElementById("passwd");
     var elPasswdConfirm = document.getElementById("passwdConfirm");
-    var elError = document.getElementById("errorMsg");
+    var elError = document.getElementById("joinusError");
     var elEmail = document.getElementById("email");
     if( elPasswdConfirm.value != elPasswd.value ){
         elPasswdConfirm.style.backgroundColor = "red";
@@ -88,17 +89,49 @@ function formConfirm(){
     console.log("confirm true");
 	var elEmail = document.getElementById("email");
     var elPasswd = document.getElementById("passwd");
-    var elError = document.getElementById("errorMsg");
+    var elError = document.getElementById("joinusError");
 	var mmapi = new MindmapAPI();
-	mmapi.joinRsp = function(state){
-		if(state){
-			
+	mmapi.joinRsp = function(boolResult){
+		if(boolResult){
+			var divPopupFail = document.getElementById("popupFail");
+			divPopupFail.style.display = "none";
+			var divPopupOk = document.getElementById("popupOk");
+			divPopupOk.style.display = "block";
+			var divPopupJoin = document.getElementById("popupJoinus");
+			divPopupJoin.style.display = "none";
 		}else{
-			elError.style.display = "block";
-			elError.innerHTML = "join fail.";
+			var divPopupFail = document.getElementById("popupFail");
+			divPopupFail.style.display = "block";
+			var divPopupOk = document.getElementById("popupOk");
+			divPopupOk.style.display = "none";
+			var divPopupJoin = document.getElementById("popupJoinus");
+			divPopupJoin.style.display = "none";
 		}
 	}
 	mmapi.join( elEmail.value, elPasswd.value );
     return false;
+
+}
+
+function joinOk(){
+	window.location = "./"
+}
+
+function joinRetry(){
+	var elEmail = document.getElementById("email");
+    var elPasswd = document.getElementById("passwd");
+    var elEmailConfirm = document.getElementById("emailConfirm");	
+    var elPasswdConfirm = document.getElementById("passwdConfirm");
+	elEmail.value = "";
+	elEmailConfirm.value = "";
+	elPasswd.value = "";
+	elPasswdConfirm.value = "";
+
+	var divPopupFail = document.getElementById("popupFail");
+	divPopupFail.style.display = "none";
+	var divPopupOk = document.getElementById("popupOk");
+	divPopupFail.style.display = "none";
+	var divPopupJoin = document.getElementById("popupJoinus");
+	divPopupJoin.style.display = "block";
 
 }

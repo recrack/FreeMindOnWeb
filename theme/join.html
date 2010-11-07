@@ -41,24 +41,51 @@
     <div id="body">
       <br/>
       <br/>
-      <div id="joinusDeco">
-        <div id="joinusTitle">
+
+      <!-- popup joinus -->
+      <div class="popupDeco" id="popupJoinus">
+        <div class="popupTitle">
           join us
         </div>
-        <div id="joinus">
-          <div id="errorMsg">errorMsg</div>
+        <div class="popupContent">
+          <div class="errorMsg" id="joinusError">errorMsg</div>
           <form action="#" id="form" onSubmit="return formConfirm()">
             <input id="email" type="email" placeholder="email"/>
             <input id="emailConfirm" type="email" placeholder="retype email"/>
             <input id="passwd" type="password" placeholder="password"/>
             <input id="passwdConfirm" type="password" placeholder="retype password"/>
-            <div id="buttonContainer">
-              <input type="submit" class="button blue" id="ok" value="Ok"></input>
-              <div class="button blue" id="cancel" onclick="history.go(-1)">Cancel</div>
+            <div class="buttonContainer">
+              <input type="submit" class="button blue" id="joinusOk" value="Ok"></input>
+              <div class="button blue" id="joinusCancel" onclick="history.go(-1)">Cancel</div>
             </div>
           </form>
         </div>
       </div>
+
+      <!-- popup join ok -->
+      <div class="popupDeco" id="popupOK">
+        <div class="popupTitle">
+          thank you.
+        </div>
+        <div class="popupContent">
+          <div class="buttonContainer">
+            <div class="button blue" onclick="joinOk()">Ok</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- popup join fail -->
+      <div class="popupDeco" id="popupFail">
+        <div class="popupTitle">
+          join fail
+        </div>
+        <div class="popupContent">
+          <div class="buttonContainer">
+            <div class="button blue" onclick="joinRetry()">Ok</div>
+          </div>
+        </div>
+      </div>
+
     </div>
     
   </body>

@@ -15,9 +15,9 @@ var MindmapAPI = function(){
 MindmapAPI.prototype.checkEmail = function(email){
     this.xmlhttp.open("POST","../php/idCheck.php",true);
     this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charaset=UTF-8");
-    this.xmlhttp.send("email=" + email);
     this.xmlhttp.onreadystatechange = this.checkEmailCallBack;
     this.xmlhttp.caller = this;
+    this.xmlhttp.send("email=" + email);
 }
 
 MindmapAPI.prototype.checkEmailCallBack = function( rspObj ){
@@ -31,9 +31,9 @@ MindmapAPI.prototype.join = function( email, passwd ){
     console.log(email, passwd);
     this.xmlhttp.open("POST","../php/join.php",true);
     this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charaset=UTF-8");
-    this.xmlhttp.send("email=" + email + "&passwd=" + passwd);
     this.xmlhttp.onreadystatechange = this.joinCallBack;
     this.xmlhttp.caller = this;
+    this.xmlhttp.send("email=" + email + "&passwd=" + passwd);
 }
 
 MindmapAPI.prototype.joinCallBack = function( rspObj ){
@@ -45,12 +45,26 @@ MindmapAPI.prototype.joinCallBack = function( rspObj ){
 MindmapAPI.prototype.login = function( email, passwd ){
     this.xmlhttp.open("POST","../php/login.php",true);
     this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charaset=UTF-8");
-    this.xmlhttp.send("email=" + email + "&passwd=" + passwd);
     this.xmlhttp.onreadystatechange = this.loginCallBack;
     this.xmlhttp.caller = this;
+    this.xmlhttp.send("email=" + email + "&passwd=" + passwd);
 }
 
 MindmapAPI.prototype.loginCallBack = function( rspObj ){
     if ( this.readyState==4 && this.status==200)
 	this.caller.loginRsp( this.responseText == '1' );
+}
+
+// logout
+MindmapAPI.prototype.logout = function(){
+    this.xmlhttp.open("GET","../php/logout.php", true);
+    this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charaset=UTF-8");   
+    this.xmlhttp.onreadystatechange = this.logoutCallBack;
+    this.xmlhttp.caller = this;
+    this.xmlhttp.send();
+}
+
+MindmapAPI.prototype.logoutCallBack = function( rspObj ){
+    if ( this.readyState==4 && this.status==200)
+	this.caller.logoutRsp( this.responseText == '1' );
 }

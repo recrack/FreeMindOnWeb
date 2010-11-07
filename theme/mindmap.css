@@ -91,6 +91,12 @@ body {
    color:red;
 }
 
+#sessionBox #userName{
+   margin-right: 10px;
+   float: left;
+   color: #CCC;
+}
+
 #login {
    margin-right:10px;
    float:left;

@@ -5,6 +5,13 @@ function mainTheme() {
     window.onresize = initMap;
 }
 
+function mainUser(){
+    window.localStorage['lastConnect'] = new Date().getTime();
+    initMap();
+    initHelp();
+    window.onresize = initMap;
+}
+
 function initMap() {
     // body postion
     var menu = document.getElementById("menu");

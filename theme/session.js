@@ -35,3 +35,21 @@ function mmlogin(){
     mmapi.login( elEmail.value, elPasswd.value );
     return false;
 }
+
+function mmlogout(){
+    console.log("logout");
+    // xml request call
+    var mmapi = new MindmapAPI();
+    mmapi.logoutRsp = function(boolResult){
+	if( boolResult ){
+            window.location = "./";
+            return true;
+	}
+	else{
+            alert("you are not loged");
+            return true;
+	}
+    }
+    mmapi.logout();
+    return false;
+}

@@ -6,10 +6,13 @@ function mainJoin(){
     elEmail.onblur = emailCheck;
     elEmailConfirm.onblur = emailConfirm;
     elPasswdConfirm.onblur = passwdConfirm;
+
 }
 
 function emailConfirm(){
     console.log("email confirm");
+	if( !emailCheck() )
+		return false;
     var elEmail = document.getElementById("email");
     var elEmailConfirm = document.getElementById("emailConfirm");
     var elError = document.getElementById("errorMsg");
@@ -20,39 +23,50 @@ function emailConfirm(){
         return false;
     }
     else{
-        elEmailConfirm.style.backgroundColor = "white";
+        elEmailConfirm.style.backgroundColor = "green";
         elError.style.display = "none";
         return true;
     }
 }
 
 function emailCheck(){
-    console.log("email check");
-    var el = document.getElementById("email");
+    var elEmail = document.getElementById("email");
     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-    var address = el.value;
     var elError = document.getElementById("errorMsg");
-    if(reg.test(address) == false){
-        el.style.backgroundColor = "red";
+    if(reg.test(elEmail.value) == false){
+        elEmail.style.backgroundColor = "red";
         elError.style.display = "block";
         elError.innerHTML = "invalidate email";
         return false;
     }
     else{
-        el.style.backgroundColor = "white";
+        elEmail.style.backgroundColor = "white";
         elError.style.display = "none";
-        reqCheckId( address );
+		// xml request call
+		var mmapi = new MindmapAPI();
+		mmapi.checkEmailRsp = function(state){
+			if( state ){
+				elEmail.style.backgroundColor = "green";
+			}
+			else{
+				elEmail.style.backgroundColor = "red";
+				elError.style.display = "block";
+				elError.innerHTML = "email address exist";
+			}
+		}
+		mmapi.checkEmail( elEmail.value );
         return true;
     }
 }
 
 function passwdConfirm(){
-    console.log("passwd confirm");
     var elPasswd = document.getElementById("passwd");
     var elPasswdConfirm = document.getElementById("passwdConfirm");
     var elError = document.getElementById("errorMsg");
+    var elEmail = document.getElementById("email");
     if( elPasswdConfirm.value != elPasswd.value ){
         elPasswdConfirm.style.backgroundColor = "red";
+        elEmail.style.backgroundColor = "red";
         elError.style.display = "block";
         elError.innerHTML = "passwd confirm fail";
         return false;
@@ -64,13 +78,7 @@ function passwdConfirm(){
     }
 }
 
-function test(){
-    console.log("test out");
-    return false;
-}
-
 function formConfirm(){
-    console.log("form confirm");
     if( !emailCheck() )
         return false;
    if( !emailConfirm() )
@@ -78,24 +86,19 @@ function formConfirm(){
     if( !passwdConfirm() )
         return false;
     console.log("confirm true");
-    return true;
-
-}
-
-function reqCheckId( address ){
-    var url = "../php/idCheck.php";
-    var params = "email=" + address;
-    xmlhttp = new XMLHttpRequest();
-
-    xmlhttp.open("POST", url, true);
-    
-    xmlhttp.onreadystatechange = function() {
-	if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-	    var rst = eval(xmlhttp.responseText);
+	var elEmail = document.getElementById("email");
+    var elPasswd = document.getElementById("passwd");
+    var elError = document.getElementById("errorMsg");
+	var mmapi = new MindmapAPI();
+	mmapi.joinRsp = function(state){
+		if(state){
+			
+		}else{
+			elError.style.display = "block";
+			elError.innerHTML = "join fail.";
+		}
 	}
-    }
-    console.log("request send");
-    xmlhttp.send(params);
-}
+	mmapi.join( elEmail.value, elPasswd.value );
+    return false;
 
-// function rspCheckId( )
+}

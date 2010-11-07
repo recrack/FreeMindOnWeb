@@ -10,23 +10,23 @@ class Connectivity {
         $this->dbpasswd = $passwd;
         $this->db = $db;
         $this->connect();
-        print "<!-- Connectivity construct -->\n";
+		//        print "<!-- Connectivity construct -->\n";
     }
     
     function connect(){
         mysql_connect(localhost, $this->dbuser, $this->dbpasswd);
         @mysql_select_db($this->db) or die( "<!-- db connect fail -->\n");
-        print "<!-- db connect -->\n";
+		//        print "<!-- db connect -->\n";
     }
     
     function close(){
         mysql_close();
-        print "<!-- db close -->\n";
+		//        print "<!-- db close -->\n";
     }
     
     function __destruct(){
         $this->close();
-        print "<!-- Connectivity destruct -->\n";
+		//        print "<!-- Connectivity destruct -->\n";
     }
 }
 ?>

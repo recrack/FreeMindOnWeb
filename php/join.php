@@ -6,12 +6,10 @@ require('conMyMindWeb.php');
 $email = $_POST['email'];
 $passwd = $_POST['passwd'];
 
-print $email;
-
 $con = new MyMindWeb(USER, PASSWD, DB);
 if( $con->boolInsertId($email, $passwd) )
-    echo 'true';
+    echo '1';
 else
-    echo 'false';
+    echo '0';
 
 ?>

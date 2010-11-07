@@ -4,14 +4,9 @@ require('connectivity.php');
 require('conMyMindWeb.php');
 
 $email = $_POST['email'];
-$passwd = $_POST['passwd'];
-
-print $email;
 
 $con = new MyMindWeb(USER, PASSWD, DB);
-if( $con->boolCheckId($email) )
-    echo 'true';
-else
-    echo 'false';
+echo $con->boolCheckId($email);
+
 
 ?>

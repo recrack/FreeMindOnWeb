@@ -29,13 +29,12 @@ class MyMindWeb extends MindWebQuery {
     }
     
     function boolInsertId($email, $passwd){
-        $query = $this->sqlInsertId($email, $passwd);
+        $query = $this->sqlInsertId($email, md5($passwd) );
         return mysql_query( $query ) or print(mysql_error());
-
     }
 
     function boolLogin( $email, $passwd ){
-        $query = $this->sqlLogin($email, $passwd);
+        $query = $this->sqlLogin($email, md5($passwd) );
         $result = mysql_query( $query ) or print(mysql_error());
         $row = mysql_fetch_array($result);
         return $row[0];

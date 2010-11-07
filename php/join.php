@@ -7,9 +7,10 @@ $email = $_POST['email'];
 $passwd = $_POST['passwd'];
 
 $con = new MyMindWeb(USER, PASSWD, DB);
+
 if( $con->boolInsertId($email, $passwd) )
-    echo '1';
+    echo 1;
 else
-    echo '0';
+    echo 0;
 
 ?>

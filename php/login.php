@@ -3,14 +3,18 @@ require('db.inc');
 require('connectivity.php');
 require('conMyMindWeb.php');
 
-$email = $_POST['email'];
+$email =  $_POST['email'];
 $passwd = $_POST['passwd'];
 
-print $email;
-
 $con = new MyMindWeb(USER, PASSWD, DB);
-if( $con->boolLogin($email, $passwd) )
-    echo 'true';
+if( $con->boolLogin($email, $passwd ) ){
+	session_start();
+	session_regenerate_id();
+	$_SESSION['SESS_EMAIL'] = $email;
+	session_write_close();
+	echo 1;
+}
 else
-    echo 'false';
+	echo 0;
+
 ?>

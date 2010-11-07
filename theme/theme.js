@@ -1,5 +1,4 @@
 function mainTheme() {
-    console.log("function");
     window.localStorage['lastConnect'] = new Date().getTime();
     initMap();
     initHelp();

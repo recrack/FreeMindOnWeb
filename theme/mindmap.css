@@ -63,11 +63,17 @@ body {
    text-shadow:1px 1px 8px #FFFFFF;
 }
 
-#sessionBox .button {
-   color: white;
-   float:left;
-   margin-right: 10px;
-   margin-left: 10px;
+#sessionBox .buttonSubmit {
+   border: 0px;
+   width: 50px;
+   color: #CCC;
+   background-color: transparent;
+   font-family : Lucida;
+   font-size : 16px;
+}
+
+#sessionBox .buttonSubmit:hover{
+   text-shadow:1px 1px 8px #FFFFFF;
 }
 
 #sessionBox .button:hover a {
@@ -75,8 +81,14 @@ body {
 }
 
 #sessionBox{
-   margin-right: 20px;
    float: right;
+   margin-right: 20px;
+   font-family : Lucida;
+}
+
+#sessionBox #errorMsg{
+   float:left;
+   color:red;
 }
 
 #login {

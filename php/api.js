@@ -68,3 +68,17 @@ MindmapAPI.prototype.logoutCallBack = function( rspObj ){
     if ( this.readyState==4 && this.status==200)
 	this.caller.logoutRsp( this.responseText == '1' );
 }
+
+// map list
+MindmapAPI.prototype.logout = function(){
+    this.xmlhttp.open("GET","../php/maplist.php", true);
+    this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charaset=UTF-8");   
+    this.xmlhttp.onreadystatechange = this.maplistCallBack;
+    this.xmlhttp.caller = this;
+    this.xmlhttp.send();
+}
+
+MindmapAPI.prototype.maplistCallBack = function( rspObj ){
+    if ( this.readyState==4 && this.status==200)
+	this.caller.maplistRsp( this.responseXML );
+}

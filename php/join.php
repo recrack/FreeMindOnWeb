@@ -1,4 +1,4 @@
-<?
+<?php
 require('db.inc');
 require('connectivity.php');
 require('conMyMindWeb.php');

@@ -1,0 +1,18 @@
+파일들에 관한 설명
+
+* html
+index.html : 로그인 하지 않은 화면
+join.html :
+mindmap.html : 로그인 후에 모든 동작
+
+*css
+theme.css : 기본 테마에 관한 모든 것.
+menubar.css : 상단 메뉴바에 관한 테마
+popup.css : 팝업에 관한 테마
+join.css : 가입에 관한 특수 테마
+
+*js
+theme.js : 가장 중요. 초기화와 관련된 모든 것.
+menuAction.js : 메뉴에 관한 동작
+session.js : 세션에 관한 동작
+join.js : 가입에 관한 동작

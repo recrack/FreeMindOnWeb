@@ -2,6 +2,7 @@ function mainTheme() {
     window.localStorage['lastConnect'] = new Date().getTime();
     initMap();
     initHelp();
+    initPopup();
     window.onresize = initMap;
 }
 
@@ -9,6 +10,7 @@ function mainUser(){
     window.localStorage['lastConnect'] = new Date().getTime();
     initMap();
     initHelp();
+    initPopup();
     window.onresize = initMap;
 }
 
@@ -29,6 +31,19 @@ function initHelp(){
         helpToggle();
 }
 
+function initPopup(){
+    var elPopupLoad = document.getElementById("popupLoad");
+    if( elPopupLoad ){
+        console.log("load box exist");
+        popupPosisionCenter(elPopupLoad);
+    }
+    var elJoinus = document.getElementById("popupJoinus");
+    if( elJoinus ){
+        console.log("joinus box exist");
+        popupPosisionCenter(elJoinus);
+    }
+}
+
 function helpToggle(){
     var help = document.getElementById("help");
     if( help.style.display == "block" || help.style.display == "" ){
@@ -39,4 +54,8 @@ function helpToggle(){
         help.style.display = "block";
         window.localStorage['helpOpen'] = true;
     }
+}
+
+function popupPosisionCenter(elPopup){
+    elPopup.style.left = (document.body.clientWidth - elPopup.clientWidth)/2;    
 }

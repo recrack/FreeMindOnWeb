@@ -1,13 +1,3 @@
-* {
-   margin:0px;
-   padding:0px;
-}
-
-body {
-   background-color : #111;
-   min-width: 1050px;
-}
-
 #menu {
    width  : "100%";
    height : 40px;
@@ -46,6 +36,15 @@ body {
 
 .buttonBox {
    float:left;
+}
+
+#menu .vr {
+   border-left: 1px solid #040404;
+   border-right: 1px solid #2F2F2F;
+   display: block;
+   float: left;
+   height: 26px;
+   margin: 6px 3px 1px;
 }
 
 #menu .button {
@@ -105,53 +104,5 @@ body {
 #login input {
    width: 150px;
    margin-left: 10px;
-}
-
-#menu .vr {
-   border-left: 1px solid #040404;
-   border-right: 1px solid #2F2F2F;
-   display: block;
-   float: left;
-   height: 26px;
-   margin: 6px 3px 1px;
-}
-
-#body {
-   align: center;
-   margin: 10px;
-   margin-top: 0px;
-
-   border-radius: 15px;
-
-   position: relative;
-   z-index:1;
-
-   background-color : white;
-
-   moz-box-shadow:inset 0 0 10px #000000;
-   -webkit-box-shadow:inset 0 0 10px #000000;
-   box-shadow:inset 0 0 10px #000000;
-}
-
-#help {
-   display: block;
-   position: absolute;
-   width: 200px;
-   border-radius: 15px;
-   z-index: 2;
-   padding: 5px;
-   background: rgba(0, 0, 0, 0.3);
-   color: white;
-   box-shadow: 1px 1px 8px #FFFFFF;
-}
-
-#help a {
-   color: white;
-   text-decoration: none;
-   text-shadow:1px 1px 8px #FFFFFF;
-}
-
-#helpclose {
-   float:right;
 }
 

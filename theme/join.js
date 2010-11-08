@@ -7,7 +7,7 @@ function mainJoin(){
     elEmail.onblur = emailCheck;
     elEmailConfirm.onblur = emailConfirm;
     elPasswdConfirm.onblur = passwdConfirm;
-    
+    initPopup();
 }
 
 function emailConfirm(){
@@ -99,6 +99,7 @@ function formConfirm(){
 	    divPopupOk.style.display = "block";
 	    var divPopupJoin = document.getElementById("popupJoinus");
 	    divPopupJoin.style.display = "none";
+            popupPosisionCenter(divPopupOk);
 	}else{
 	    var divPopupFail = document.getElementById("popupFail");
 	    divPopupFail.style.display = "block";
@@ -106,6 +107,7 @@ function formConfirm(){
 	    divPopupOk.style.display = "none";
 	    var divPopupJoin = document.getElementById("popupJoinus");
 	    divPopupJoin.style.display = "none";
+            popupPosisionCenter(divPopupFail);
 	}
     }
     mmapi.join( elEmail.value, elPasswd.value );

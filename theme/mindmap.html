@@ -5,13 +5,17 @@
   <head>
     <title>myMindWeb.kr</title>
     <!-- css -->
-    <link rel="stylesheet" href="./mindmap.css" type="text/css" /> 
+    <link rel="stylesheet" href="./theme.css" type="text/css" />
+    <link rel="stylesheet" href="./menuBar.css" type="text/css" />
+    <link rel="stylesheet" href="./popup.css" type="text/css" />
+
     <!-- java script -->
     <script type="text/javascript" src="./theme.js"></script> 
     <script type="text/javascript" src="./session.js"></script> 
     <script type="text/javascript" src="../php/api.js"></script> 
+    <script type="text/javascript" src="./menuAction.js"></script> 
   </head>
-  <body onload="mainUser()">
+  <body onload="mainUser()" onResize="mainResize()">
 
     <!-- menu -->
     <div id="menu">
@@ -24,7 +28,7 @@
       <ul class="buttonBox">
         <li class="button"><a href="#">new</a></li>
         <li class="button"><a href="#">save</a></li>
-        <li class="button"><a href="#">load</a></li>
+        <li class="button"><a href="#" onClick="return onMenuLoad()">load</a></li>
         <li class="button"><a href="#">export</a></li>
         <li class="button" onclick="helpToggle()"><a href="#">help</a></li>
       </ul>
@@ -40,6 +44,15 @@
 
     <!-- body -->
     <div id="body">
+    </div>
+
+    <!-- load -->
+    <div class="popupDeco" id="popupLoad">
+      <div class="popupTitle">beonit
+      </div>
+      <div class="popupContent">
+        test
+      </div>
     </div>
 
     <!-- help -->

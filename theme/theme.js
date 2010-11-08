@@ -3,7 +3,12 @@ function mainTheme() {
     initMap();
     initHelp();
     initPopup();
-    window.onresize = initMap;
+    window.onresize = resizeAll;
+}
+
+function resizeAll(){
+    initMap();
+    initHelp();
 }
 
 function mainUser(){

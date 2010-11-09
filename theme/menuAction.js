@@ -42,7 +42,7 @@ function onMMLoad( elMapName ){
             console.log("map data fail");
             return;
         }
-        var jsMap = eval( strJson );
+        var jsMap = eval( "(" + strJson + ")" );
         console.log(jsMap);
     }
     mmapi.MMLoad( mapName );

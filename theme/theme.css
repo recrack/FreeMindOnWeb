@@ -52,7 +52,7 @@ body {
 /* load */
 #popupLoad{
    visibility: visible;
-   width: 500px;
+   width: 300px;
 }
 
 #mmList{
@@ -62,8 +62,8 @@ body {
    border-radius: 10px;   
    margin-left: auto;
    margin-right: auto;
-   height:300px;
-   width:480px;
+   height:100px;
+   width:95%;
    background: white;
    overflow:scroll=yes;
    overflow-X:hidden

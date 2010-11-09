@@ -15,13 +15,26 @@ function onMenuLoad(){
     popupPosisionCenter(elPopupLoad);
     // xml request call
     var mmapi = new MindmapAPI();
-    mmapi.maplistRsp = function(xml){
-        if( xml == null ){
-            // 없음.
+    mmapi.maplistRsp = function( strJson ){
+        if( strJson == null ){
+            console.log("map list fail");
+            return;
         }
-        // 있음.
-
+        var jsMapList = eval("("+strJson+")");  
+        console.log(jsMapList);
+        var elListBox = document.getElementById("mmList");
+        var htmlMapList = "";
+        for( var i in jsMapList ){
+            htmlMapList += "<div class=\"mapName\" onClick=\"onMMLoad(\"" + jsMapList[i] + "\");\">";
+            htmlMapList += jsMapList[i];
+            htmlMapList += "</div>";
+        }
+        elListBox.innerHTML = htmlMapList;
     }
     mmapi.maplist();
     return false;
+}
+
+function onMMLoad( mapName ){
+    console.log( mapName );
 }

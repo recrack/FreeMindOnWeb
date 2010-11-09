@@ -1,4 +1,3 @@
-
 function onMenuLoad(){
     var elPopupLoad = document.getElementById("popupLoad");
     if( !elPopupLoad ){
@@ -20,12 +19,11 @@ function onMenuLoad(){
             console.log("map list fail");
             return;
         }
-        var jsMapList = eval("("+strJson+")");  
-        console.log(jsMapList);
+        var jsMapList = eval( strJson);
         var elListBox = document.getElementById("mmList");
         var htmlMapList = "";
         for( var i in jsMapList ){
-            htmlMapList += "<div class=\"mapName\" onClick=\"onMMLoad(\"" + jsMapList[i] + "\");\">";
+            htmlMapList += "<div class=\"mapName\" onClick=\"onMMLoad(this);\">";
             htmlMapList += jsMapList[i];
             htmlMapList += "</div>";
         }
@@ -35,6 +33,18 @@ function onMenuLoad(){
     return false;
 }
 
-function onMMLoad( mapName ){
-    console.log( mapName );
+function onMMLoad( elMapName ){
+    var mapName = elMapName.innerHTML;
+    var mmapi = new MindmapAPI();
+    mmapi.MMLoadRsp = function( strJson ) {
+        console.log( strJson );
+        if( strJson == null ){
+            console.log("map data fail");
+            return;
+        }
+        var jsMap = eval( strJson );
+        console.log(jsMap);
+    }
+    mmapi.MMLoad( mapName );
 }
+

@@ -70,7 +70,7 @@ MindmapAPI.prototype.logoutCallBack = function( rspObj ){
 }
 
 // map list
-MindmapAPI.prototype.logout = function(){
+MindmapAPI.prototype.maplist = function(){
     this.xmlhttp.open("GET","../php/maplist.php", true);
     this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charaset=UTF-8");   
     this.xmlhttp.onreadystatechange = this.maplistCallBack;
@@ -80,5 +80,19 @@ MindmapAPI.prototype.logout = function(){
 
 MindmapAPI.prototype.maplistCallBack = function( rspObj ){
     if ( this.readyState==4 && this.status==200)
-	this.caller.maplistRsp( this.responseXML );
+	this.caller.maplistRsp( this.responseText );
+}
+
+// MM load
+MindmapAPI.prototype.MMLoad = function(mapName){
+    this.xmlhttp.open("POST","../php/mapLoad.php", true);
+    this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charaset=UTF-8");   
+    this.xmlhttp.onreadystatechange = this.MMLoadCallBack;
+    this.xmlhttp.caller = this;
+    this.xmlhttp.send("mapName=" + mapName);
+}
+
+MindmapAPI.prototype.MMLoadCallBack = function( rspObj ){
+    if ( this.readyState==4 && this.status==200)
+	this.caller.MMLoadRsp( this.responseText );
 }

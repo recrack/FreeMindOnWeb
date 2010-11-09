@@ -23,10 +23,45 @@ class MindWebQuery extends Connectivity {
 		return "SELECT name FROM `mapName`, `owner` WHERE mapName.mapid = owner.mapid AND owner.owner = '" . $email . "'";
 	}
 
+	function sqlMapLoad( $email, $mapName )
+	{
+		return "SELECT map.mapdata FROM  `mapName`, `map`, `owner` WHERE mapName.mapid = map.mapid AND mapName.name = 'map name 1' AND owner.mapid = map.mapid AND owner = 'beonit@gmail.com'";
+	}
+	
+	
+
 }
 
 class MyMindWeb extends MindWebQuery {
     
+	// sql to 
+	function sql2json($data_sql) 
+	{
+		$total = mysql_num_rows($data_sql);
+		if($total == 0)
+			return ;
+		$row_count = 0;    
+		$json_str .= "[\n";
+		while($data = mysql_fetch_assoc($data_sql)) {
+            if(count($data) > 1) $json_str .= "{\n";
+            $count = 0;
+            foreach($data as $key => $value) {
+                //If it is an associative array we want it in the format of "key":"value"
+                if(count($data) > 1) $json_str .= "\"$key\":\"$value\"";
+                else $json_str .= "\"$value\"";
+                //Make sure that the last item don't have a ',' (comma)
+                $count++;
+                if($count < count($data)) $json_str .= ",\n";
+            }
+            $row_count++;
+            if(count($data) > 1) $json_str .= "}\n";
+            //Make sure that the last item don't have a ',' (comma)
+            if($row_count < $total) $json_str .= ",\n";
+        }
+        $json_str .= "]\n";
+		print $json_str;
+	}
+
     function boolCheckId( $email ){
         $query = $this->sqlCheckId($email);
         $result = mysql_query( $query ) or print(mysql_error());
@@ -46,20 +81,20 @@ class MyMindWeb extends MindWebQuery {
         return $row[0];
     }
 
-	function rstMaplist( $email ){
-		print '<?xml version="1.0" encoding="utf-8"?>';
-		print "<result>\n";
+	function maplist( $email ){
 		$query = $this->sqlMaplist( $email );
         $result = mysql_query( $query ) or print(mysql_error());
-		print "<owner>";
-		while ($row = mysql_fetch_array($result)) {
-			print "<map name=\"" . $row['name'] . "\"></map>";
-		}
-		print "</owner>";
-		print "</result>";
+		$this->sql2json( $result );
 		return true;
 	}
-	
 
+	function jsonMapLoad( $email, $mapName )
+	{
+		$query = $this->sqlMapLoad( $email, $mapName );
+        $result = mysql_query( $query ) or print(mysql_error());
+        $row = mysql_fetch_array($result);
+		return $row[0];
+	}
 }
+
 ?>

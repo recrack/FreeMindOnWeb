@@ -24,7 +24,7 @@ function initMap() {
     var menu = document.getElementById("menu");
     var body = document.getElementById("body");
     body.style.height = window.innerHeight - menu.clientHeight - 14;
-    
+    initCanvas(0);
 }
 
 function initHelp(){

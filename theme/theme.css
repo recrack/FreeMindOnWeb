@@ -51,7 +51,7 @@ body {
 
 /* load */
 #popupLoad{
-   visibility: visible;
+   visibility: hidden;
    width: 300px;
 }
 

@@ -24,7 +24,7 @@ function showMode(msg){
     }
 }
 
-function init( isFrameRateMode ) {
+function initCanvas( isFrameRateMode ) {
     initCtrlKey();
     resizeCanvas();
     Mode = ModeNone;

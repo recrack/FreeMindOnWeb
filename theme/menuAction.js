@@ -5,7 +5,7 @@ function onMenuLoad(){
         return false;
     }
     // visibility
-    if( elPopupLoad.style.visibility == "visible" || elPopupLoad.style.visibility == "" ){
+    if( elPopupLoad.style.visibility == "visible" ){
         elPopupLoad.style.visibility = "hidden";
         return false;
     }
@@ -43,7 +43,6 @@ function onMMLoad( elMapName ){
             return;
         }
         var jsMap = eval( "(" + strJson + ")" );
-        console.log(jsMap);
     }
     mmapi.MMLoad( mapName );
 }

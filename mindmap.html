@@ -12,38 +12,9 @@
     <script src="clipboard.js" language="javascript" type=""></script>
     <script src="mindmapMouse.js" language="javascript" type=""></script>
     <script src="mindmapKeyboard.js" language="javascript" type=""></script>
-    <link rel="stylesheet" href="./menu/dropdown.css" type="text/css" /> 
-    <script type="text/javascript" src="./menu/dropdown.js"></script> 
 
   </head>
   <body onload="init(0)">
-    <div id="menu">
-      <dl class="dropdown"> 
-        <dt id="one-ddheader" onmouseover="ddMenu('one',1)" onmouseout="ddMenu('one',-1)">Dropdown One</dt> 
-        <dd id="one-ddcontent" onmouseover="cancelHide('one')" onmouseout="ddMenu('one',-1)"> 
-          <ul> 
-            <li><a href="#" class="underline">Navigation Item 1</a></li> 
-            <li><a href="#" class="underline">Navigation Item 2</a></li> 
-            <li><a href="#" class="underline">Navigation Item 3</a></li> 
-            <li><a href="#" class="underline">Navigation Item 4</a></li> 
-            <li><a href="#">Navigation Item 5</a></li> 
-          </ul> 
-        </dd> 
-      </dl> 
-      
-      <dl class="dropdown"> 
-        <dt id="two-ddheader" onmouseover="ddMenu('two',1)" onmouseout="ddMenu('two',-1)">Dropdown Two</dt> 
-        <dd id="two-ddcontent" onmouseover="cancelHide('two')" onmouseout="ddMenu('two',-1)"> 
-          <ul> 
-            <li><a href="#" class="underline">Navigation Item 1</a></li> 
-            <li><a href="#" class="underline">Navigation Item 2</a></li> 
-            <li><a href="#" class="underline">Navigation Item 3</a></li> 
-            <li><a href="#" class="underline">Navigation Item 4</a></li> 
-            <li><a href="#">Navigation Item 5</a></li> 
-          </ul> 
-        </dd> 
-      </dl> 
-    </div>
     <div id="fps"></div>
     <input id="input" type="text"></input>
     <canvas id="canvas" onMouseMove="onMouseMoveCanvas(this)"  onmouseup="onMouseUpCanvas()" onmousedown="onMouseDownCanvas()" ondblclick="onMouseDbClickCanvas()" onclick="onMouseClickCanvas()">

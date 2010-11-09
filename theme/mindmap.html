@@ -14,6 +14,20 @@
     <script type="text/javascript" src="./session.js"></script> 
     <script type="text/javascript" src="../php/api.js"></script> 
     <script type="text/javascript" src="./menuAction.js"></script> 
+
+    <!-- mind map -->
+    <link rel="stylesheet" type="text/css" href="../mindmap.css"></link>
+
+    <script src="../windowSize.js" language="javascript" type=""></script>
+    <script src="../framerate.js" language="javascript" type=""></script>
+    <script src="../json2.js" language="javascript" type=""></script>
+    <script src="../mapdata.js" language="javascript" type=""></script>
+    <script src="../mindmapDraw.js" language="javascript" type=""></script>
+    <script src="../mindmap.js" language="javascript" type=""></script>
+    <script src="../clipboard.js" language="javascript" type=""></script>
+    <script src="../mindmapMouse.js" language="javascript" type=""></script>
+    <script src="../mindmapKeyboard.js" language="javascript" type=""></script>
+
   </head>
   <body onload="mainUser()" onResize="mainResize()">
 
@@ -44,6 +58,10 @@
 
     <!-- body -->
     <div id="body">
+      <!-- mindmap -->
+      <input id="input" type="text"></input>
+      <canvas id="canvas" onMouseMove="onMouseMoveCanvas(this)"  onmouseup="onMouseUpCanvas()" onmousedown="onMouseDownCanvas()" ondblclick="onMouseDbClickCanvas()" onclick="onMouseClickCanvas()">
+      </canvas>
     </div>
 
     <!-- load -->

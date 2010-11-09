@@ -7,29 +7,29 @@ function onMouseMoveCanvas(canvas){
     if( Mode == ModeNone ){
         var evt = window.event || e;
         draw();
-        var node = findNodeByPos(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
+        var node = findNodeByPos(RootNode, evt.clientX - canvas.offsetParent.offsetLeft, evt.clientY - canvas.offsetParent.offsetTop);
         if( node != null )
             FocusNode = node.id;
     }
     if( Mode == ModeDrag ){
         var evt = window.event || e;
         var dx = ptDragStart.x - evt.clientX;
-        var dy = ptDragStart.y - evt.clientY + canvas.offsetTop;
+        var dy = ptDragStart.y - evt.clientY;
         DrawPosX -= dx;
         DrawPosY -= dy;
-        ptDragStart.x = evt.clientX - canvas.offsetLeft;
-        ptDragStart.y = evt.clientY - canvas.offsetTop;
+        ptDragStart.x = evt.clientX;
+        ptDragStart.y = evt.clientY;
         draw();
     }
 }
 
-function onMouseDownCanvas(){
+function onMouseDownCanvas(canvas){
     if( Mode == ModeEdit)
         return;
     Mode = ModeDrag;
     var evt = window.event || e;
-    ptDragStart.x = evt.clientX - canvas.offsetLeft;
-    ptDragStart.y = evt.clientY - canvas.offsetTop;
+    ptDragStart.x = evt.clientX - canvas.offsetParent.offsetLeft;
+    ptDragStart.y = evt.clientY - canvas.offsetParent.offsetTop;
 }
 
 function onMouseUpCanvas(){
@@ -42,12 +42,12 @@ function onMouseUpCanvas(){
    }
  }
 
-function onMouseDbClickCanvas(){
+function onMouseDbClickCanvas(canvas){
     if( Mode == ModeEdit ){
         NodeEditDone();
     }
     var evt = window.event || e;
-    var node = findNodeByPos(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
+    var node = findNodeByPos(RootNode, evt.clientX - canvas.offsetParent.offsetLeft, evt.clientY - canvas.offsetParent.offsetTop);
     if( node == null )
         return;
     FocusNode = node.id;
@@ -56,7 +56,7 @@ function onMouseDbClickCanvas(){
     NodeEdit();
 }
 
-function onMouseClickCanvas(){
+function onMouseClickCanvas(canvas){
     // node folding    
     if( Mode == ModeEdit ){
         NodeEditDone();
@@ -66,7 +66,7 @@ function onMouseClickCanvas(){
         // update focus
         var evt = window.event || e;
         draw();
-        var node = findNodeByPos(RootNode, evt.clientX - canvas.offsetLeft, evt.clientY - canvas.offsetTop);
+        var node = findNodeByPos(RootNode, evt.clientX - canvas.offsetParent.offsetLeft, evt.clientY - canvas.offsetParent.offsetTop);
         if( node == null )
             return;
         FocusNode = node.id;

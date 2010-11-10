@@ -77,6 +77,49 @@
       </div>
     </div>
 
+    <!-- load confirm -->
+    <div class="popupDeco" id="popupLoadConfirm">
+      <div class="popupTitle">
+        map is modifed
+      </div>
+      <div class="popupContent">
+        do you wnat save, before load?
+        <div class="buttonContainer">
+          <div class="button blue" onclick="onLoadConfirmYes()">Yes</div>
+          <div class="button blue" onclick="onLoadConfirmNo()">No</div>
+          <div class="button blue" onclick="onLoadConfirmCancel()">Cancel</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- save new confirm -->
+    <div class="popupDeco" id="popupSaveNewConfirm">
+      <div class="popupTitle">
+        New map
+      </div>
+      <div class="popupContent">
+        do you wnat save now?
+        <div class="buttonContainer">
+          <div class="button blue" onclick="onSaveNewYes()">Yes</div>
+          <div class="button blue" onclick="onSaveNewNo()">No</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- save ok -->
+    <div class="popupDeco" id="popupOk">
+      <div class="popupTitle" id="popupOkTitle">
+        ok
+      </div>
+      <div class="popupContent">
+        <div id="popupOkContent">
+        </div>
+        <div class="buttonContainer">
+          <div class="button blue" onclick="popupOkClose()">Ok</div>
+        </div>
+      </div>
+    </div>
+
     <!-- help -->
     <div id="help">
       <div id="helpclose" onclick="helpToggle()"><a href="#">X</a></div>

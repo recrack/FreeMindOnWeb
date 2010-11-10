@@ -115,3 +115,18 @@ MindmapAPI.prototype.MMSaveCallBack = function( rspObj ){
 	this.caller.MMSaveRsp( this.responseText );
     }
 }
+
+// MM Save new
+MindmapAPI.prototype.MMSaveNew = function( mapData, mapName ){
+    this.xmlhttp.open("POST","./php/mapSaveNew.php", true);
+    this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charaset=UTF-8");
+    this.xmlhttp.onreadystatechange = this.MMSaveNewCallBack;
+    this.xmlhttp.caller = this;
+    this.xmlhttp.send( "mapData=" + mapData + "&mapName=" + mapName );
+}
+
+MindmapAPI.prototype.MMSaveNewCallBack = function( rspObj ){
+    if ( this.readyState==4 && this.status==200){
+	this.caller.MMSaveNewRsp( this.responseText );
+    }
+}

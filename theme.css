@@ -94,3 +94,29 @@ body {
    display: block;
 }
 
+/* popup load confirm */
+#popupLoadConfirm{
+   visibility: hidden;
+}
+
+#popupLoadConfirm .popupContent {
+   color: white;
+}
+
+/* popup save new confirm */
+#popupSaveNewConfirm {
+   visibility: hidden;  
+}
+
+#popupSaveNewConfirm .popupContent {
+   color: white;   
+}
+
+/* popup ok */
+#popupOk {
+   visibility: hidden;  
+}
+
+#popupOk .popupContent {
+   color: white;   
+}

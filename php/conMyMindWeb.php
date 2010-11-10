@@ -39,6 +39,26 @@ class MindWebQuery extends Connectivity {
 		return "UPDATE `map` SET  `mapdata` =  '".$mapData."' WHERE  `map`.`mapid` = " . $mapid . " AND ( SELECT mapid FROM owner WHERE owner = '".$email."' AND mapid = ".$mapid." )";
 	}
 
+	function sqlGetMaxId()
+	{
+		return "SELECT MAX(mapid) FROM `mapName`";
+	}
+	
+	function sqlInsData( $mapid, $mapData )
+	{
+		return "INSERT INTO `map` (`mapid`, `mapData`) VALUES ('".$mapid."', '".$mapData."');";
+	}
+	
+	function sqlInsOwner( $mapid, $email )
+	{
+		return "INSERT INTO `owner` (`mapid`, `owner`) VALUES ('".$mapid."', '".$email."');";
+	}
+	
+	function sqlInsName( $mapid, $mapName )
+	{
+		return "INSERT INTO `mapName` (`mapid`, `name`) VALUES ('".$mapid."', '".$mapName."');";
+	}
+	
 }
 
 class MyMindWeb extends MindWebQuery {
@@ -117,6 +137,30 @@ class MyMindWeb extends MindWebQuery {
 		return $result;
 	}
 	
+	function boolMapSaveNew( $email, $mapData, $mapName )
+	{
+		// transaction need but...
+		// get max id
+		$queryGetMaxId = $this->sqlGetMaxId();
+		$result = mysql_query( $queryGetMaxId ) or print(mysql_error());
+        $row = mysql_fetch_array($result);
+		$mapid = $row[0] + 1;
+		// insert data
+		$queryInsData = $this->sqlInsData( $mapid, $mapData );
+		$result = mysql_query( $queryInsData ) or print(mysql_error());
+		if( !$result )
+			return $result;
+		// insert owner
+		$queryInsOwner = $this->sqlInsOwner( $mapid, $email );
+		$result = mysql_query( $queryInsOwner ) or print(mysql_error());
+		if( !$result )
+			return $result;
+		// insert name
+		$queryInsName = $this->sqlInsName( $mapid, $mapName );
+		$result = mysql_query( $queryInsName ) or print(mysql_error());
+		return $result;
+	}
 }
 
 ?>
+

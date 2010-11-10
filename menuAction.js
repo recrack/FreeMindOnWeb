@@ -4,23 +4,40 @@ function onMenuJoinus(){
 }
 
 function onMenuNew(){
-    RootNode = {"text":" html5", "id":0, "fold":false, "child":[] }
     return false;
 }
 
 function onMenuLoad(){
+    if( MapModified ){
+        var elPopup = document.getElementById("popupLoadConfirm");
+        elPopup.style.visibility = "visible";
+        popupPosisionCenter(elPopup);
+        return;
+    }
+    else
+        onLoadListPopup();
+}
+
+function onLoadConfirmYes(){
+    document.getElementById("popupLoadConfirm").style.visibility = "hidden";
+    onMMSave();
+    // TODO. save의 결과를 보고 load를 해야 하는데. 방법이 없다.
+    onLoadListPopup();
+}
+
+function onLoadConfirmNo(){
+    document.getElementById("popupLoadConfirm").style.visibility = "hidden";
+    onLoadListPopup();
+}
+
+function onLoadConfirmCancel(){
+    document.getElementById("popupLoadConfirm").style.visibility = "hidden";
+}
+
+function onLoadListPopup(){
     var elPopupLoad = document.getElementById("popupLoad");
-    if( !elPopupLoad ){
-        console.log("load box not exist");
-        return false;
-    }
-    // visibility
-    if( elPopupLoad.style.visibility == "visible" ){
-        elPopupLoad.style.visibility = "hidden";
-        return false;
-    }
     elPopupLoad.style.visibility = "visible";
-    // position
+    // position to center
     popupPosisionCenter(elPopupLoad);
     // xml request call
     var mmapi = new MindmapAPI();
@@ -60,6 +77,7 @@ function onMMLoad( mapid ){
         DrawPosX = canvas.width/2 - (RootNode.area[2] - RootNode.area[0]);
         DrawPosY = canvas.height/2;
         draw();
+        popupOkOpen("load", "");
     }
     mmapi.MMLoad( mapid );
 }
@@ -69,22 +87,72 @@ function onMMLoadCancel(){
 }
 
 function onMenuSave(){
-//    if( Mapid == -1 )
-//        saveAsNewMap();
-    onMMSave();
+    if( !MapModified )
+        return false;
+    if( Mapid == -1 ){
+        var elPopup = document.getElementById("popupSaveNewConfirm");
+        elPopup.style.visibility = "visible";
+        popupPosisionCenter(elPopup);
+    }
+    else{
+        onMMSave();
+        popupOkOpen("Save", "complete");
+    }
     return false;
 }
+
+function onSaveNewYes() {
+    document.getElementById("popupSaveNewConfirm").style.visibility = "hidden";
+    onMMSaveNew();
+}
+
+function onSaveNewNo() {
+    document.getElementById("popupSaveNewConfirm").style.visibility = "hidden";
+}
+
+function popupOkOpen(title, text){
+    var elPopup = document.getElementById("popupOk");
+    elPopup.style.visibility = "visible";    
+    var elTitle = document.getElementById("popupOkTitle");
+    elTitle.innerHTML = title;
+    var elContent = document.getElementById("popupOkContent");
+    elContent.innerHTML = text;
+    popupPosisionCenter(elPopup);
+}
+
+function popupOkClose(){
+    document.getElementById("popupOk").style.visibility = "hidden";    
+}
+
 
 function onMMSave(){
     var mmaip = new MindmapAPI();
     mmaip.MMSaveRsp = function( state ){
         if( !state ){
-            console.log("fail");
+            Alert("save new fail");
         }
-        else 
-            console.log("success");
+        else {
+            MapModified = false;
+            popupOkOpen("save", "");
+        }
+
     }
-    mmaip.MMSave( JSON.stringify( RootNode), Mapid, RootNode.text );
+    mmaip.MMSave( JSON.stringify(RootNode), Mapid, RootNode.text );
+}
+
+function onMMSaveNew(){
+    var mmaip = new MindmapAPI();
+    mmaip.MMSaveNewRsp = function( state ){
+        if( !state ){
+            Alert("save new fail");
+        }
+        else {
+            MapModified = false;
+            popupOkOpen("save", "");
+        }
+    }
+    mmaip.MMSaveNew( JSON.stringify(RootNode), RootNode.text );
+
 }
 
 function saveAsNewMap(){

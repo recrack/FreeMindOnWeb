@@ -3,12 +3,23 @@ function mainTheme() {
     initMap();
     initHelp();
     initPopup();
+    initJoinus();
     window.onresize = resizeAll;
 }
 
 function resizeAll(){
     initMap();
     initHelp();
+}
+
+function initJoinus(){
+    var elJoin = document.getElementById("popupJoinus");
+    var elEmail = document.getElementById("joinEmail");
+    var elEmailConfirm = document.getElementById("joinEmailConfirm");
+    var elPasswdConfirm = document.getElementById("joinPasswdConfirm");
+    elEmail.onblur = joinEmailCheck;
+    elEmailConfirm.onblur = joinEmailConfirm;
+    elPasswdConfirm.onblur = joinPasswdConfirm;
 }
 
 function mainUser(){

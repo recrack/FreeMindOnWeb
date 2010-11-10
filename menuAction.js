@@ -1,3 +1,8 @@
+function onMenuJoinus(){
+    var elJoinus = document.getElementById("popupJoinus");
+    elJoinus.style.visibility = "visible";
+}
+
 function onMenuLoad(){
     var elPopupLoad = document.getElementById("popupLoad");
     if( !elPopupLoad ){

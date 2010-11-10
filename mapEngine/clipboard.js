@@ -1,7 +1,7 @@
 var clipBoard;
 
-// 중요!!
-// 호출하기 전에 반드시 findMaxId를 불러줘야 한다.
+// important!
+// before call this function, you must call findMaxId
 function makeCopyNode(node){
     var newNode = makeNewNode(++MaxId);
     newNode.text = node.text;

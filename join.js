@@ -1,22 +1,6 @@
-function onMenuJoinus(){
-    var elJoin = document.getElementById("popupJoinus");
-    elJoin.style.visibility = "visible";
-}
-
-function mainJoin(){
-    initMap();
-    var elEmail = document.getElementById("joinEmail");
-    var elEmailConfirm = document.getElementById("joinEmailConfirm");
-    var elPasswdConfirm = document.getElementById("joinPasswdConfirm");
-    elEmail.onblur = emailCheck;
-    elEmailConfirm.onblur = emailConfirm;
-    elPasswdConfirm.onblur = passwdConfirm;
-    initPopup();
-}
-
-function emailConfirm(){
+function joinEmailConfirm(){
     console.log("email confirm");
-    if( !emailCheck() )
+    if( !joinEmailCheck() )
 	return false;
     var elEmail = document.getElementById("joinEmail");
     var elEmailConfirm = document.getElementById("joinEmailConfirm");
@@ -34,7 +18,7 @@ function emailConfirm(){
     }
 }
 
-function emailCheck(){
+function joinEmailCheck(){
     var elEmail = document.getElementById("joinEmail");
     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     var elError = document.getElementById("joinusError");
@@ -64,7 +48,7 @@ function emailCheck(){
     }
 }
 
-function passwdConfirm(){
+function joinPasswdConfirm(){
     var elPasswd = document.getElementById("joinPasswd");
     var elPasswdConfirm = document.getElementById("joinPasswdConfirm");
     var elError = document.getElementById("joinusError");
@@ -84,11 +68,11 @@ function passwdConfirm(){
 }
 
 function formConfirm(){
-    if( !emailCheck() )
+    if( !joinEmailCheck() )
         return false;
-    if( !emailConfirm() )
+    if( !joinEmailConfirm() )
         return false;
-    if( !passwdConfirm() )
+    if( !joinPasswdConfirm() )
         return false;
     console.log("confirm true");
     var elEmail = document.getElementById("joinEmail");
@@ -120,6 +104,8 @@ function formConfirm(){
 }
 
 function joinComplete(){
+    var elJoinOk = document.getElementById("popupJoinOk");
+    elJoinOk.style.visibility = "hidden";
 }
 
 function joinCancel(){

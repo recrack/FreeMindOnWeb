@@ -3,6 +3,8 @@ var isCtrl = false;
 // keyboard event
 function onKeyUp(){
     var evtobj = window.event ? event : e;
+    if(evtobj.which == 17)
+        isCtrl = false;
     if( isCtrl == true )
         return;
     switch( evtobj.keyCode ){
@@ -21,7 +23,7 @@ function onKeyUp(){
         }
     case 13:
         // enter key
-        console.log("enter key");
+        // console.log("enter key");
         if( Mode == ModeEdit ){
             NodeEditDone();
             Mode = ModeAfterSibling;
@@ -60,7 +62,7 @@ function onKeyUp(){
         break;
     case 27:
         // ESC
-        console.log("ESC Key");
+        // console.log("ESC Key");
         if( Mode == ModeEdit ){
             NodeEditCancel();
             Mode = ModeEsc;
@@ -189,7 +191,7 @@ function onKeyUp(){
         {
             if( Mode == ModeEdit )
                 return;
-            console.log("insert Key");
+            // console.log("insert Key");
             findMaxId(RootNode);
             MaxId++;
             var node = findFocusNode(RootNode);
@@ -224,7 +226,7 @@ function onKeyUp(){
         Mode = ModeEdit;
         break;
     default:
-        console.log("key unkown");
+        // console.log("key unkown");
         break;
     }
 }
@@ -241,7 +243,7 @@ function onKeyDown(e){
             // do save, "ctrl + S"
             removeDreg( RootNode );
             var jsonStr = JSON.stringify( RootNode );
-            console.log(jsonStr);
+            // console.log(jsonStr);
             e.which = 0;
             return false;
         }
@@ -252,11 +254,11 @@ function onKeyDown(e){
             if( cNode == RootNode ){
                 // paste to root node                
                 if( isMoreRootRight(RootNode) ){
-                    console.log("left");
+                    // console.log("left");
                     clipBoard['direct'] = "left";
                 }
                 else{
-                    console.log("right");
+                    // console.log("right");
                     clipBoard['direct'] = "right";
                 }
             }
@@ -328,13 +330,13 @@ function onKeyDown(e){
     case 39:
         {
             // right key
-            console.log("C-right");
+            // console.log("C-right");
             return false;
         }
     case 37:
         {
             // left key
-            console.log("C-left");
+            // console.log("C-left");
             return false;
         }
     }

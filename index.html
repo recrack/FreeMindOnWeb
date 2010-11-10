@@ -20,7 +20,20 @@
     <!-- java script -->
     <script type="text/javascript" src="./theme.js"></script> 
     <script type="text/javascript" src="./session.js"></script> 
-    <script type="text/javascript" src="../php/api.js"></script> 
+    <script type="text/javascript" src="./php/api.js"></script> 
+
+    <!-- mind map -->
+    <link rel="stylesheet" type="text/css" href="./mapEngine/mindmap.css"></link>
+
+    <script src="mapEngine/framerate.js" language="javascript" type=""></script>
+    <script src="mapEngine/json2.js" language="javascript" type=""></script>
+    <script src="mapEngine/mapdata.js" language="javascript" type=""></script>
+    <script src="mapEngine/mindmapDraw.js" language="javascript" type=""></script>
+    <script src="mapEngine/mindmap.js" language="javascript" type=""></script>
+    <script src="mapEngine/clipboard.js" language="javascript" type=""></script>
+    <script src="mapEngine/mindmapMouse.js" language="javascript" type=""></script>
+    <script src="mapEngine/mindmapKeyboard.js" language="javascript" type=""></script>
+
   </head>
   <body onload="mainTheme()">
 
@@ -55,6 +68,10 @@
 
     <!-- body -->
     <div id="body">
+      <!-- mindmap -->
+      <input id="input" type="text"></input>
+      <canvas id="canvas" onMouseMove="onMouseMoveCanvas(this)"  onmouseup="onMouseUpCanvas(this)" onmousedown="onMouseDownCanvas(this)" ondblclick="onMouseDbClickCanvas(this)" onclick="onMouseClickCanvas(this)">
+      </canvas>
     </div>
 
     <!-- help -->
@@ -67,6 +84,5 @@
       move : direction key<br/>
       copy, paste, cut : ctrl + c,v,x<br/>
     </div>
-
   </body>
 </html>

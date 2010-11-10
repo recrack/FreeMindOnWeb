@@ -13,7 +13,7 @@ var MindmapAPI = function(){
 
 // id duplicate check
 MindmapAPI.prototype.checkEmail = function(email){
-    this.xmlhttp.open("POST","../php/idCheck.php",true);
+    this.xmlhttp.open("POST","./php/idCheck.php",true);
     this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charaset=UTF-8");
     this.xmlhttp.onreadystatechange = this.checkEmailCallBack;
     this.xmlhttp.caller = this;
@@ -29,7 +29,7 @@ MindmapAPI.prototype.checkEmailCallBack = function( rspObj ){
 // join
 MindmapAPI.prototype.join = function( email, passwd ){
     console.log(email, passwd);
-    this.xmlhttp.open("POST","../php/join.php",true);
+    this.xmlhttp.open("POST","./php/join.php",true);
     this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charaset=UTF-8");
     this.xmlhttp.onreadystatechange = this.joinCallBack;
     this.xmlhttp.caller = this;
@@ -43,7 +43,7 @@ MindmapAPI.prototype.joinCallBack = function( rspObj ){
 
 // login
 MindmapAPI.prototype.login = function( email, passwd ){
-    this.xmlhttp.open("POST","../php/login.php",true);
+    this.xmlhttp.open("POST","./php/login.php",true);
     this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charaset=UTF-8");
     this.xmlhttp.onreadystatechange = this.loginCallBack;
     this.xmlhttp.caller = this;
@@ -57,7 +57,7 @@ MindmapAPI.prototype.loginCallBack = function( rspObj ){
 
 // logout
 MindmapAPI.prototype.logout = function(){
-    this.xmlhttp.open("GET","../php/logout.php", true);
+    this.xmlhttp.open("GET","./php/logout.php", true);
     this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charaset=UTF-8");   
     this.xmlhttp.onreadystatechange = this.logoutCallBack;
     this.xmlhttp.caller = this;
@@ -71,7 +71,7 @@ MindmapAPI.prototype.logoutCallBack = function( rspObj ){
 
 // map list
 MindmapAPI.prototype.maplist = function(){
-    this.xmlhttp.open("GET","../php/maplist.php", true);
+    this.xmlhttp.open("GET","./php/maplist.php", true);
     this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charaset=UTF-8");   
     this.xmlhttp.onreadystatechange = this.maplistCallBack;
     this.xmlhttp.caller = this;
@@ -85,7 +85,7 @@ MindmapAPI.prototype.maplistCallBack = function( rspObj ){
 
 // MM load
 MindmapAPI.prototype.MMLoad = function(mapName){
-    this.xmlhttp.open("POST","../php/mapLoad.php", true);
+    this.xmlhttp.open("POST","./php/mapLoad.php", true);
     this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charaset=UTF-8");   
     this.xmlhttp.onreadystatechange = this.MMLoadCallBack;
     this.xmlhttp.caller = this;

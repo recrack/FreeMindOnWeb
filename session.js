@@ -5,6 +5,7 @@ function emailCheck(){
 }
 
 function mmlogin(){
+    joinCancel();
     console.log("login");
     var elEmail = document.getElementById("email");
     if( !emailCheck() ){

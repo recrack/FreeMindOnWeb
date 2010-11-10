@@ -21,6 +21,7 @@
     <script type="text/javascript" src="./theme.js"></script> 
     <script type="text/javascript" src="./session.js"></script> 
     <script type="text/javascript" src="./php/api.js"></script> 
+    <script type="text/javascript" src="./join.js"></script> 
 
     <!-- mind map -->
     <link rel="stylesheet" type="text/css" href="./mapEngine/mindmap.css"></link>
@@ -54,6 +55,7 @@
       </ul>
       <span class="vr"></span>
 
+      <!-- session box -->
       <div id="sessionBox">
         <div id="errorMsg"></div>
         <form id="login" action="#" onSubmit="return mmlogin()">
@@ -62,7 +64,7 @@
           <input type="submit" value="login" class="buttonSubmit"/>
         </form>
         <span class="vr"></span>
-        <div class="button"><a href="./join.html">join us</a></div>
+        <div class="button" onClick="onMenuJoinus()"><a href="#" onClick="return false">join us</a></div>
       </div>
     </div>
 
@@ -84,5 +86,51 @@
       move : direction key<br/>
       copy, paste, cut : ctrl + c,v,x<br/>
     </div>
+
+    <!-- popup joinus -->
+    <div class="popupDeco" id="popupJoinus">
+      <div class="popupTitle">
+        join us
+      </div>
+      <div class="popupContent">
+        <div class="errorMsg" id="joinusError">errorMsg</div>
+        <form action="#" id="form" onSubmit="return formConfirm()">
+          <input id="joinEmail" type="email" placeholder="email"/>
+          <input id="joinEmailConfirm" type="email" placeholder="retype email"/>
+          <input id="joinPasswd" type="password" placeholder="password"/>
+          <input id="joinPasswdConfirm" type="password" placeholder="retype password"/>
+          <div class="buttonContainer">
+            <input type="submit" class="button blue" id="joinusOk" value="Ok"></input>
+            <div class="button blue" id="joinusCancel" onclick="joinCancel()">Cancel</div>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- popup join ok -->
+    <div class="popupDeco" id="popupJoinOk">
+      <div class="popupTitle">
+        thank you.<br/>
+        login please
+      </div>
+      <div class="popupContent">
+        <div class="buttonContainer">
+          <div class="button blue" onclick="joinComplete()">Ok</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- popup join fail -->
+    <div class="popupDeco" id="popupJoinFail">
+      <div class="popupTitle">
+        join fail
+      </div>
+      <div class="popupContent">
+        <div class="buttonContainer">
+          <div class="button blue" onclick="joinRetry()">Ok</div>
+        </div>
+      </div>
+    </div>
+    
   </body>
 </html>

@@ -69,3 +69,28 @@ body {
    overflow-X:hidden
 }
 
+/* join */
+#popupJoinus{
+   visibility: hidden;
+}
+
+#joinusOk{
+   width: 100px;
+}
+
+.buttonContainer{
+   margin-top: 10px;
+}
+
+#popupJoinOK{
+   display: none;
+}
+
+#popupJoinFail{
+   display: none;
+}
+
+#popupJoinus{
+   display: block;
+}
+

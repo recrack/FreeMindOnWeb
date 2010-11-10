@@ -1,9 +1,13 @@
+function onMenuJoinus(){
+    var elJoin = document.getElementById("popupJoinus");
+    elJoin.style.visibility = "visible";
+}
 
 function mainJoin(){
     initMap();
-    var elEmail = document.getElementById("email");
-    var elEmailConfirm = document.getElementById("emailConfirm");
-    var elPasswdConfirm = document.getElementById("passwdConfirm");
+    var elEmail = document.getElementById("joinEmail");
+    var elEmailConfirm = document.getElementById("joinEmailConfirm");
+    var elPasswdConfirm = document.getElementById("joinPasswdConfirm");
     elEmail.onblur = emailCheck;
     elEmailConfirm.onblur = emailConfirm;
     elPasswdConfirm.onblur = passwdConfirm;
@@ -14,8 +18,8 @@ function emailConfirm(){
     console.log("email confirm");
     if( !emailCheck() )
 	return false;
-    var elEmail = document.getElementById("email");
-    var elEmailConfirm = document.getElementById("emailConfirm");
+    var elEmail = document.getElementById("joinEmail");
+    var elEmailConfirm = document.getElementById("joinEmailConfirm");
     var elError = document.getElementById("joinusError");
     if( elEmailConfirm.value != elEmail.value ){
         elEmailConfirm.style.backgroundColor = "red";
@@ -31,7 +35,7 @@ function emailConfirm(){
 }
 
 function emailCheck(){
-    var elEmail = document.getElementById("email");
+    var elEmail = document.getElementById("joinEmail");
     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     var elError = document.getElementById("joinusError");
     if(reg.test(elEmail.value) == false){
@@ -61,10 +65,10 @@ function emailCheck(){
 }
 
 function passwdConfirm(){
-    var elPasswd = document.getElementById("passwd");
-    var elPasswdConfirm = document.getElementById("passwdConfirm");
+    var elPasswd = document.getElementById("joinPasswd");
+    var elPasswdConfirm = document.getElementById("joinPasswdConfirm");
     var elError = document.getElementById("joinusError");
-    var elEmail = document.getElementById("email");
+    var elEmail = document.getElementById("joinEmail");
     if( elPasswdConfirm.value != elPasswd.value ){
         elPasswdConfirm.style.backgroundColor = "red";
         elEmail.style.backgroundColor = "red";
@@ -87,23 +91,23 @@ function formConfirm(){
     if( !passwdConfirm() )
         return false;
     console.log("confirm true");
-    var elEmail = document.getElementById("email");
-    var elPasswd = document.getElementById("passwd");
+    var elEmail = document.getElementById("joinEmail");
+    var elPasswd = document.getElementById("joinPasswd");
     var elError = document.getElementById("joinusError");
     var mmapi = new MindmapAPI();
     mmapi.joinRsp = function(boolResult){
 	if(boolResult){
-	    var divPopupFail = document.getElementById("popupFail");
+	    var divPopupFail = document.getElementById("popupJoinFail");
 	    divPopupFail.style.display = "none";
-	    var divPopupOk = document.getElementById("popupOk");
+	    var divPopupOk = document.getElementById("popupJoinOk");
 	    divPopupOk.style.display = "block";
 	    var divPopupJoin = document.getElementById("popupJoinus");
 	    divPopupJoin.style.display = "none";
             popupPosisionCenter(divPopupOk);
 	}else{
-	    var divPopupFail = document.getElementById("popupFail");
+	    var divPopupFail = document.getElementById("popupJoinFail");
 	    divPopupFail.style.display = "block";
-	    var divPopupOk = document.getElementById("popupOk");
+	    var divPopupOk = document.getElementById("popupJoinOk");
 	    divPopupOk.style.display = "none";
 	    var divPopupJoin = document.getElementById("popupJoinus");
 	    divPopupJoin.style.display = "none";
@@ -115,23 +119,27 @@ function formConfirm(){
     
 }
 
-function joinOk(){
-    window.location = "./mindmap.html"
+function joinComplete(){
+}
+
+function joinCancel(){
+    var elJoin = document.getElementById("popupJoinus");
+    elJoin.style.visibility = "hidden";
 }
 
 function joinRetry(){
-    var elEmail = document.getElementById("email");
-    var elPasswd = document.getElementById("passwd");
-    var elEmailConfirm = document.getElementById("emailConfirm");	
-    var elPasswdConfirm = document.getElementById("passwdConfirm");
+    var elEmail = document.getElementById("joinEmail");
+    var elPasswd = document.getElementById("joinPasswd");
+    var elEmailConfirm = document.getElementById("joinEmailConfirm");	
+    var elPasswdConfirm = document.getElementById("joinPasswdConfirm");
     elEmail.value = "";
     elEmailConfirm.value = "";
     elPasswd.value = "";
     elPasswdConfirm.value = "";
     
-    var divPopupFail = document.getElementById("popupFail");
+    var divPopupFail = document.getElementById("popupJoinFail");
     divPopupFail.style.display = "none";
-    var divPopupOk = document.getElementById("popupOk");
+    var divPopupOk = document.getElementById("popupJoinOk");
     divPopupFail.style.display = "none";
 	var divPopupJoin = document.getElementById("popupJoinus");
     divPopupJoin.style.display = "block";

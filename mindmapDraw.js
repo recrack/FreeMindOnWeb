@@ -260,6 +260,5 @@ function draw(){
     measureNodeRight(RootNode);
     measureNodeLeft(RootNode);
     nodeDrawRoot(ctx, DrawPosX, DrawPosY, RootNode);
-    ctx.fillRect(0, 0, 10, 10);
 }
 

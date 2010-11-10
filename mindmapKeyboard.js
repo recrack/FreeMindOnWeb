@@ -193,6 +193,8 @@ function onKeyUp(){
             findMaxId(RootNode);
             MaxId++;
             var node = findFocusNode(RootNode);
+            // insert side effect. fold false.
+            node.fold = false;
             // check root child or normal child
             var newNode;
             if( node == RootNode ){

@@ -47,3 +47,6 @@ function onMMLoad( elMapName ){
     mmapi.MMLoad( mapName );
 }
 
+function onMMLoadCancel(){
+    document.getElementById("popupLoad").style.visibility = "hidden";
+}

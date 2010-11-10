@@ -19,6 +19,15 @@ function mainUser(){
     window.onresize = initMap;
 }
 
+function resizeCanvas(){
+    var canvas = document.getElementById("canvas");
+    var mapBody = document.getElementById("body");
+    var canvasWidth = mapBody.clientWidth;
+    var canvasHeight = mapBody.clientHeight;
+    canvas.setAttribute("width", canvasWidth);
+    canvas.setAttribute("height", canvasHeight);
+}
+
 function initMap() {
     // body postion
     var menu = document.getElementById("menu");

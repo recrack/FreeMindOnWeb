@@ -1,23 +1,92 @@
+<?php
+	require_once('../php/auth.php');
+?>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>canvas test</title>
-    <link rel="stylesheet" type="text/css" href="mindmap.css"></link>
+    <title>myMindWeb.kr</title>
+    <!-- css -->
+    <link rel="stylesheet" href="./theme.css" type="text/css" />
+    <link rel="stylesheet" href="./menuBar.css" type="text/css" />
+    <link rel="stylesheet" href="./popup.css" type="text/css" />
 
-    <script src="windowSize.js" language="javascript" type=""></script>
-    <script src="framerate.js" language="javascript" type=""></script>
-    <script src="json2.js" language="javascript" type=""></script>
-    <script src="mapdata.js" language="javascript" type=""></script>
-    <script src="mindmapDraw.js" language="javascript" type=""></script>
-    <script src="mindmap.js" language="javascript" type=""></script>
-    <script src="clipboard.js" language="javascript" type=""></script>
-    <script src="mindmapMouse.js" language="javascript" type=""></script>
-    <script src="mindmapKeyboard.js" language="javascript" type=""></script>
+    <!-- java script -->
+    <script type="text/javascript" src="./theme.js"></script> 
+    <script type="text/javascript" src="./session.js"></script> 
+    <script type="text/javascript" src="../php/api.js"></script> 
+    <script type="text/javascript" src="./menuAction.js"></script> 
+
+    <!-- mind map -->
+    <link rel="stylesheet" type="text/css" href="../mindmap.css"></link>
+
+    <script src="mapEngine/framerate.js" language="javascript" type=""></script>
+    <script src="mapEngine/json2.js" language="javascript" type=""></script>
+    <script src="mapEngine/mapdata.js" language="javascript" type=""></script>
+    <script src="mapEngine/mindmapDraw.js" language="javascript" type=""></script>
+    <script src="mapEngine/mindmap.js" language="javascript" type=""></script>
+    <script src="mapEngine/clipboard.js" language="javascript" type=""></script>
+    <script src="mapEngine/mindmapMouse.js" language="javascript" type=""></script>
+    <script src="mapEngine/mindmapKeyboard.js" language="javascript" type=""></script>
 
   </head>
-  <body onload="init(0)">
-    <div id="fps"></div>
-    <input id="input" type="text"></input>
-    <canvas id="canvas" onMouseMove="onMouseMoveCanvas(this)"  onmouseup="onMouseUpCanvas()" onmousedown="onMouseDownCanvas()" ondblclick="onMouseDbClickCanvas()" onclick="onMouseClickCanvas()">
-    </canvas>
+  <body onload="mainUser()" onResize="mainResize()">
+
+    <!-- menu -->
+    <div id="menu">
+      <div id="title">
+        MyMindWeb.kr
+      </div>
+      <span class="vr"></span>
+      <div class="subtitle" id="mapname">RootName</div>
+      <span class="vr"></span>
+      <ul class="buttonBox">
+        <li class="button"><a href="#">new</a></li>
+        <li class="button"><a href="#">save</a></li>
+        <li class="button"><a href="#" onClick="return onMenuLoad()">load</a></li>
+        <li class="button"><a href="#">export</a></li>
+        <li class="button" onclick="helpToggle()"><a href="#">help</a></li>
+      </ul>
+      <span class="vr"></span>
+
+      <div id="sessionBox">
+        <div id="userName"><?php echo $_SESSION['SESS_EMAIL'] ?></div>
+        <span class="vr"></span>
+        <div class="button"><a href="./edit.html" onClick="return false">edit</a></div>
+        <div class="button"><a href="./" onClick="return mmlogout()">logout</a></div>
+      </div>
+    </div>
+
+    <!-- body -->
+    <div id="body">
+      <!-- mindmap -->
+      <input id="input" type="text"></input>
+      <canvas id="canvas" onMouseMove="onMouseMoveCanvas(this)"  onmouseup="onMouseUpCanvas(this)" onmousedown="onMouseDownCanvas(this)" ondblclick="onMouseDbClickCanvas(this)" onclick="onMouseClickCanvas(this)">
+      </canvas>
+    </div>
+
+    <!-- load -->
+    <div class="popupDeco" id="popupLoad">
+      <div class="popupTitle">
+        your maps
+      </div>
+      <div class="popupContent">
+        <div id="mmList">
+        </div>
+        <div class="buttonContainer">
+          <div class="button blue" onclick="onMMLoadCancel()">cancel</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- help -->
+    <div id="help">
+      <div id="helpclose" onclick="helpToggle()"><a href="#">X</a></div>
+      insert child : insert key<br/>
+      insert sibling : enter key<br/>
+      modify node : F2<br/>
+      delete node : delete key<br/>
+      move : direction key<br/>
+      copy, paste, cut : ctrl + c,v,x<br/>
+    </div>
+
   </body>
 </html>

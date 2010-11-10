@@ -20,15 +20,13 @@ class MindWebQuery extends Connectivity {
 
 	function sqlMaplist( $email )
 	{
-		return "SELECT name FROM `mapName`, `owner` WHERE mapName.mapid = owner.mapid AND owner.owner = '" . $email . "'";
+		return "SELECT name, mapName.mapid FROM `mapName`, `owner` WHERE mapName.mapid = owner.mapid AND owner.owner = '" . $email . "'";
 	}
 
-	function sqlMapLoad( $email, $mapName )
+	function sqlMapLoad( $email, $mapid )
 	{
-		return "SELECT map.mapdata FROM  `mapName`, `map`, `owner` WHERE mapName.mapid = map.mapid AND mapName.name = 'map name 1' AND owner.mapid = map.mapid AND owner = 'beonit@gmail.com'";
+		return "SELECT map.mapdata FROM  `mapName`, `map`, `owner` WHERE mapName.mapid = map.mapid AND mapName.mapid = " . $mapid . " AND owner.mapid = map.mapid AND owner = '" . $email . "'";
 	}
-	
-	
 
 }
 
@@ -88,9 +86,9 @@ class MyMindWeb extends MindWebQuery {
 		return true;
 	}
 
-	function jsonMapLoad( $email, $mapName )
+	function jsonMapLoad( $email, $mapid )
 	{
-		$query = $this->sqlMapLoad( $email, $mapName );
+		$query = $this->sqlMapLoad( $email, $mapid );
         $result = mysql_query( $query ) or print(mysql_error());
         $row = mysql_fetch_array($result);
 		return $row[0];

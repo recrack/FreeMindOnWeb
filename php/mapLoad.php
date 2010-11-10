@@ -10,10 +10,10 @@ require('db.inc');
 require('connectivity.php');
 require('conMyMindWeb.php');
 
-$mapName = $_GET['mapName'];
+$mapid = $_POST['mapid'];
 
 $con = new MyMindWeb(USER, PASSWD, DB);
 
-echo $con->jsonMapLoad($_SESSION['SESS_EMAIL'], $mapName);
+echo $con->jsonMapLoad($_SESSION['SESS_EMAIL'], $mapid);
 
 ?>

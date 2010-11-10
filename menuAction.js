@@ -3,6 +3,11 @@ function onMenuJoinus(){
     elJoinus.style.visibility = "visible";
 }
 
+function onMenuNew(){
+    RootNode = {"text":" html5", "id":0, "fold":false, "child":[] }
+    return false;
+}
+
 function onMenuLoad(){
     var elPopupLoad = document.getElementById("popupLoad");
     if( !elPopupLoad ){
@@ -28,8 +33,8 @@ function onMenuLoad(){
         var elListBox = document.getElementById("mmList");
         var htmlMapList = "";
         for( var i in jsMapList ){
-            htmlMapList += "<div class=\"mapName\" onClick=\"onMMLoad(this);\">";
-            htmlMapList += jsMapList[i];
+            htmlMapList += "<div class=\"mapName\" onClick=\"onMMLoad(" + jsMapList[i].mapid + ");\">";
+            htmlMapList += jsMapList[i].name;
             htmlMapList += "</div>";
         }
         elListBox.innerHTML = htmlMapList;
@@ -38,20 +43,27 @@ function onMenuLoad(){
     return false;
 }
 
-function onMMLoad( elMapName ){
-    var mapName = elMapName.innerHTML;
+function onMMLoad( mapid ){
     var mmapi = new MindmapAPI();
     mmapi.MMLoadRsp = function( strJson ) {
-        console.log( strJson );
         if( strJson == null ){
             console.log("map data fail");
             return;
         }
-        var jsMap = eval( "(" + strJson + ")" );
+        MapId = mapid;
+        RootNode = eval( "(" + strJson + ")" );
+        // close popup
+        var elPopupLoad = document.getElementById("popupLoad");
+        elPopupLoad.style.visibility = "hidden";
+        // go to center
+        DrawPosX = canvas.width/2 - (RootNode.area[2] - RootNode.area[0]);
+        DrawPosY = canvas.height/2;
+        draw();
     }
-    mmapi.MMLoad( mapName );
+    mmapi.MMLoad( mapid );
 }
 
 function onMMLoadCancel(){
     document.getElementById("popupLoad").style.visibility = "hidden";
 }
+

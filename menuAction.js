@@ -45,13 +45,14 @@ function onMenuLoad(){
 
 function onMMLoad( mapid ){
     var mmapi = new MindmapAPI();
-    mmapi.MMLoadRsp = function( strJson ) {
+    mmapi.MMLoadRsp = function( strJson, mapid ) {
         if( strJson == null ){
             console.log("map data fail");
             return;
         }
         MapId = mapid;
         RootNode = eval( "(" + strJson + ")" );
+        Mapid = mapid;
         // close popup
         var elPopupLoad = document.getElementById("popupLoad");
         elPopupLoad.style.visibility = "hidden";
@@ -65,5 +66,27 @@ function onMMLoad( mapid ){
 
 function onMMLoadCancel(){
     document.getElementById("popupLoad").style.visibility = "hidden";
+}
+
+function onMenuSave(){
+//    if( Mapid == -1 )
+//        saveAsNewMap();
+    onMMSave();
+    return false;
+}
+
+function onMMSave(){
+    var mmaip = new MindmapAPI();
+    mmaip.MMSaveRsp = function( state ){
+        if( !state ){
+            console.log("fail");
+        }
+        else 
+            console.log("success");
+    }
+    mmaip.MMSave( JSON.stringify( RootNode), Mapid, RootNode.text );
+}
+
+function saveAsNewMap(){
 }
 

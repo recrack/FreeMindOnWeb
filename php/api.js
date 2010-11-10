@@ -90,11 +90,28 @@ MindmapAPI.prototype.MMLoad = function(mapid){
     this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charaset=UTF-8");   
     this.xmlhttp.onreadystatechange = this.MMLoadCallBack;
     this.xmlhttp.caller = this;
+    this.xmlhttp.mapid = mapid;
     this.xmlhttp.send("mapid=" + mapid);
 }
 
 MindmapAPI.prototype.MMLoadCallBack = function( rspObj ){
     if ( this.readyState==4 && this.status==200){
-	this.caller.MMLoadRsp( this.responseText );
+	this.caller.MMLoadRsp( this.responseText, this.mapid );
+    }
+}
+
+// MM Save
+MindmapAPI.prototype.MMSave = function( mapData, mapid, mapName ){
+    this.xmlhttp.open("POST","./php/mapSave.php", true);
+    this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charaset=UTF-8");
+    this.xmlhttp.onreadystatechange = this.MMSaveCallBack;
+    this.xmlhttp.caller = this;
+    this.xmlhttp.mapid = mapid;
+    this.xmlhttp.send( "mapData=" + mapData + "&mapid=" + mapid + "&mapName=" + mapName );
+}
+
+MindmapAPI.prototype.MMSaveCallBack = function( rspObj ){
+    if ( this.readyState==4 && this.status==200){
+	this.caller.MMSaveRsp( this.responseText );
     }
 }

@@ -28,6 +28,17 @@ class MindWebQuery extends Connectivity {
 		return "SELECT map.mapdata FROM  `mapName`, `map`, `owner` WHERE mapName.mapid = map.mapid AND mapName.mapid = " . $mapid . " AND owner.mapid = map.mapid AND owner = '" . $email . "'";
 	}
 
+	function sqlUpdateMapName( $email, $mapid, $mapName )
+	{
+		// UPDATE  `myMindWeb`.`mapName` SET  `name` =  'map name 15' WHERE  `mapName`.`mapid` =1 AND ( SELECT mapid FROM owner WHERE owner = 'beonit@gmail.com' AND mapid = 1 )
+		return "UPDATE `mapName` SET  `name` =  '".$mapName."' WHERE  `mapName`.`mapid` = " . $mapid . " AND ( SELECT mapid FROM owner WHERE owner = '".$email."' AND mapid = ".$mapid." )";
+	}
+	
+	function sqlUpdateMapData( $email, $mapid, $mapData)
+	{
+		return "UPDATE `map` SET  `mapdata` =  '".$mapData."' WHERE  `map`.`mapid` = " . $mapid . " AND ( SELECT mapid FROM owner WHERE owner = '".$email."' AND mapid = ".$mapid." )";
+	}
+
 }
 
 class MyMindWeb extends MindWebQuery {
@@ -93,6 +104,19 @@ class MyMindWeb extends MindWebQuery {
         $row = mysql_fetch_array($result);
 		return $row[0];
 	}
+
+	function boolMapSave( $email, $mapData, $mapid, $mapName )
+	{
+		// transaction need but...
+		$queryUpName = $this->sqlUpdateMapName( $email, $mapid, $mapName );
+		$queryUpData = $this->sqlUpdateMapData( $email, $mapid, $mapData );
+        $result = mysql_query( $queryUpName ) or print(mysql_error());
+		if( !$result )
+			return $result;
+		$result = mysql_query( $queryUpData ) or print(mysql_error());
+		return $result;
+	}
+	
 }
 
 ?>

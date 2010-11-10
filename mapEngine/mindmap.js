@@ -1,6 +1,6 @@
 var FocusNode = 0;
-var MapEdited = false;
-var MapId = -1;
+var MapModified = false;
+var Mapid = -1;
 
 var Mode;
 const ModeNone = 0, ModeEdit = 1, ModeDrag = 2;
@@ -141,7 +141,7 @@ function findNodeByPos(node, x, y){
 }
 
 function NodeEdit(){
-    MapEdited = true;
+    MapModified = true;
     var canvas = document.getElementById("canvas");
     var input = document.getElementById('input');
     var node = findFocusNode(RootNode);
